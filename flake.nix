@@ -81,10 +81,7 @@
         in
         {
           default = pkgs.mkShell {
-            packages = [
-              virtualenv
-              pkgs.uv
-            ];
+            packages = [ virtualenv uv2nix.packages.${system}.uv-bin ];
             env = {
               UV_NO_SYNC = "1";
               UV_PYTHON = pythonSet.python.interpreter;
