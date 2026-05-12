@@ -1,4 +1,4 @@
-# knxray
+# knxray <img src="logo.svg" align="right" height="140" alt="knxray logo"/>
 
 [KNX](https://www.knx.org) is a building-automation standard used to wire up lighting, heating, blinds, and similar systems.
 Installations are configured in [ETS](https://www.knx.org/knx-en/for-professionals/software/ets-6/), a proprietary Windows application that stores its project state in `*.knxproj` files — zipped, opaque XML blobs.
