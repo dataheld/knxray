@@ -1,15 +1,16 @@
 ## Development Environment
 
 - Always enter the nix dev shell first `nix develop .`
-- Never install any tools interatively, always commit them to the `flake.nix` first, then run `flake update`.
+- Never install any tools interatively, always add them to the `flake.nix` first, then run `flake update`.
+- At every turn, make sure all the flake targets can still be build.
 
 ## Spec-Driven Workflow
 
 For any non-trivial task:
 
-1. Create or update `PLAN.md` with architecture, responsibilities, acceptance criteria, and step-by-step plan.
+1. Create or update files like `PLAN.md`, `SPEC.md` or `DESIGN.md` with architecture, responsibilities, acceptance criteria, and step-by-step plan.
 2. Commit it first.
-3. Implement strictly against the committed `PLAN.md`.
+3. Implement strictly against these committed "planning-mode" `*.md`s.
 4. After implementation, update the plan with any deviations + rationale.
 
 ### PIV Loop
