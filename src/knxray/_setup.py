@@ -1,22 +1,19 @@
 import subprocess
-import sys
 
 
 def _run(cmd: list[str]) -> None:
     subprocess.run(cmd, check=True)
 
 
-def main() -> None:
-    global_flag = "--global" in sys.argv[1:]
-
+def setup(global_flag: bool = False) -> None:
     scope = ["--global"] if global_flag else []
 
-    _run(["git", "config", *scope, "diff.knxplain.textconv", "knxshow"])
-    _run(["git", "config", *scope, "diff.knxplain.cachetextconv", "true"])
+    _run(["git", "config", *scope, "diff.knxray.textconv", "knxray show"])
+    _run(["git", "config", *scope, "diff.knxray.cachetextconv", "true"])
 
     if not global_flag:
         gitattributes = ".gitattributes"
-        line = "*.knxproj diff=knxplain\n"
+        line = "*.knxproj diff=knxray\n"
         try:
             with open(gitattributes) as f:
                 if line in f.read():
@@ -28,4 +25,4 @@ def main() -> None:
         print(f"Updated {gitattributes}")
 
     scope_label = "global" if global_flag else "local"
-    print(f"Configured git textconv driver ({scope_label}): *.knxproj → knxshow")
+    print(f"Configured git textconv driver ({scope_label}): *.knxproj → knxray show")

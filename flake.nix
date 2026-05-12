@@ -57,19 +57,15 @@
       schemas = flake-schemas.schemas;
 
       packages = forAllSystems (system: {
-        default = pythonSets.${system}.mkVirtualEnv "knxplain-env" workspace.deps.default;
+        default = pythonSets.${system}.mkVirtualEnv "knxray-env" workspace.deps.default;
       });
 
       apps = forAllSystems (system: rec {
-        knxshow = {
+        knxray = {
           type = "app";
-          program = "${self.packages.${system}.default}/bin/knxshow";
+          program = "${self.packages.${system}.default}/bin/knxray";
         };
-        knxdiff = {
-          type = "app";
-          program = "${self.packages.${system}.default}/bin/knxdiff";
-        };
-        default = knxshow;
+        default = knxray;
       });
 
       devShells = forAllSystems (
@@ -77,7 +73,7 @@
         let
           pkgs = nixpkgs.legacyPackages.${system};
           pythonSet = pythonSets.${system}.overrideScope editableOverlay;
-          virtualenv = pythonSet.mkVirtualEnv "knxplain-dev-env" workspace.deps.all;
+          virtualenv = pythonSet.mkVirtualEnv "knxray-dev-env" workspace.deps.all;
         in
         {
           default = pkgs.mkShell {
@@ -99,10 +95,10 @@
         system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
-          testVenv = pythonSets.${system}.mkVirtualEnv "knxplain-test-env" workspace.deps.all;
+          testVenv = pythonSets.${system}.mkVirtualEnv "knxray-test-env" workspace.deps.all;
         in
         {
-          pytest = pkgs.runCommand "knxplain-pytest" { nativeBuildInputs = [ testVenv ]; } ''
+          pytest = pkgs.runCommand "knxray-pytest" { nativeBuildInputs = [ testVenv ]; } ''
             export HOME=$(mktemp -d)
             pytest ${self}/tests -v --tb=short -p no:cacheprovider
             touch $out

@@ -3,15 +3,13 @@ requires = ["hatchling", "editables"]
 build-backend = "hatchling.build"
 
 [project]
-name = "knxplain"
+name = "knxray"
 version = "0.1.0"
 requires-python = ">=3.9"
 dependencies = ["xknxproject"]
 
 [project.scripts]
-knxshow  = "knxplain._show:main"
-knxdiff  = "knxplain._diff:main"
-knxsetup = "knxplain._setup:main"
+knxray = "knxray._cli:main"
 
 [dependency-groups]
 dev = ["pytest"]

@@ -52,7 +52,7 @@ wheels = [
 ]
 
 [[package]]
-name = "knxplain"
+name = "knxray"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

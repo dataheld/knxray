@@ -10,38 +10,37 @@ _DEMO_GA_ADDED = _FIXTURES / "demo-ga-added.knxproj"
 _DEMO_DEVICE_PARAM = _FIXTURES / "demo-device-param.knxproj"
 
 
-def _knxshow(path):
-    from knxplain._show import main
+def _show(path):
+    from knxray._show import show
     buf = StringIO()
-    with patch("sys.argv", ["knxshow", str(path)]), redirect_stdout(buf):
-        main()
+    with redirect_stdout(buf):
+        show(path)
     return buf.getvalue()
 
 
-def _knxdiff(path1, path2):
-    from knxplain._diff import main
+def _diff(path1, path2):
+    from knxray._diff import diff
     out, err = StringIO(), StringIO()
-    with patch("sys.argv", ["knxdiff", str(path1), str(path2)]):
-        with redirect_stdout(out), patch("sys.stderr", err):
-            main()
+    with redirect_stdout(out), patch("sys.stderr", err):
+        diff(path1, path2)
     return out.getvalue(), err.getvalue()
 
 
 def test_smoke():
-    json.loads(_knxshow(_DEMO))
+    json.loads(_show(_DEMO))
 
 
 def test_notice_field():
-    data = json.loads(_knxshow(_DEMO))
+    data = json.loads(_show(_DEMO))
     assert "_notice" in data and data["_notice"]
 
 
 def test_detectable_diff():
-    stdout, _ = _knxdiff(_DEMO, _DEMO_GA_ADDED)
+    stdout, _ = _diff(_DEMO, _DEMO_GA_ADDED)
     assert stdout.strip()
 
 
 def test_invisible_diff():
-    stdout, stderr = _knxdiff(_DEMO, _DEMO_DEVICE_PARAM)
+    stdout, stderr = _diff(_DEMO, _DEMO_DEVICE_PARAM)
     assert not stdout.strip()
     assert "WARNING" in stderr
