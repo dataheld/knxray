@@ -56,6 +56,11 @@ The warning at step 4 ("XML differs but the parser is blind to it") disappears o
 This is the same approach used for diffing Office documents (`.docx`, `.xlsx`) via git `textconv`:
 a semantic parser (e.g. pandoc) extracts the meaningful content; the surrounding zip metadata is silently ignored.
 
+**Currently implemented:** levels 1, 2, and 4.
+Level 3 (XML-semantic diff, catching device parameters) is the next planned step.
+Once level 3 exists, a `--level` flag will be added to both `show` and `diff` to select the extraction depth explicitly (default: `json`, the current behaviour).
+Until then, `knxray show` implicitly uses `--level json`.
+
 ## Commands
 
 | Command | Purpose |
