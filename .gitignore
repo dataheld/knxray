@@ -1,2 +1,5 @@
 .claude/
 .direnv/
+__pycache__/
+*.pyc
+*.pyo
