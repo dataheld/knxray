@@ -1,6 +1,12 @@
 # knxplain
 
-Creates diffable, plain-text JSON from *parts* of your `*.knxproj` using the [xknxproject](https://github.com/XKNX/xknxproject) parser.
+[KNX](https://www.knx.org) is a building-automation standard used to wire up lighting, heating, blinds, and similar systems.
+Installations are configured in [ETS](https://www.knx.org/knx-en/for-professionals/software/ets-6/), a proprietary Windows application that stores its project state in `*.knxproj` files — zipped, opaque XML blobs.
+
+This makes version-controlling a KNX installation harder than it should be.
+You can commit `*.knxproj` files to git, but `git diff` just says *binary files differ*.
+knxplain is a helper that makes those files *somewhat* more transparent:
+it converts some of the parts of a `*.knxproj` that can be extracted (group addresses, devices, communication objects) into sorted, stable JSON, which git can then diff normally.
 
 > [!IMPORTANT]
 > `xknxproject` only parses a *subset* of your `*.knxproj`, including group addresses, devices, and communication objects.
