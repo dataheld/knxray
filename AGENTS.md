@@ -1,3 +1,8 @@
+## Development Environment
+
+- Always enter the nix dev shell first `nix develop .`
+- Never install any tools interatively, always commit them to the `flake.nix` first, then run `flake update`.
+
 ## Spec-Driven Workflow
 
 For any non-trivial task:
