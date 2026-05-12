@@ -5,11 +5,11 @@ build-backend = "hatchling.build"
 [project]
 name = "knxray"
 version = "0.1.0"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = ["xknxproject"]
 
 [project.scripts]
 knxray = "knxray._cli:main"
 
 [dependency-groups]
-dev = ["pytest"]
+dev = ["pytest", "syrupy"]

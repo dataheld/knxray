@@ -1,0 +1,678 @@
+# serializer version: 1
+# name: test_diff_snapshot
+  '''
+  --- tests/fixtures/demo.knxproj
+  +++ tests/fixtures/demo-ga-added.knxproj
+  @@ -34,7 +34,7 @@
+         "object_size": "1 Bit",
+         "text": ""
+       },
+  -    "1.0.1/MD-2_M-2_MI-1_O-2-0_R-6": {
+  +    "1.0.1/MD-2_M-2_MI-1_O-2-1_R-7": {
+         "channel": "MD-2_M-2_MI-1_CH-argCH",
+         "description": "",
+         "device_address": "1.0.1",
+  @@ -42,8 +42,8 @@
+         "dpas": null,
+         "dpts": [
+           {
+  -          "main": 1,
+  -          "sub": 1
+  +          "main": 3,
+  +          "sub": 7
+           }
+         ],
+         "flags": {
+  @@ -54,27 +54,192 @@
+           "update": false,
+           "write": false
+         },
+  -      "function_text": "CH-{{argCH}} - Dimming : OnOff",
+  -      "group_address_links": [
+  -        "0/0/4"
+  +      "function_text": "CH-{{argCH}} - Dimming : Dimming Control",
+  +      "group_address_links": [
+  +        "0/0/5"
+  +      ],
+  +      "module_def": {
+  +        "definition": "MD-2",
+  +        "root_number": 1
+  +      },
+  +      "name": "",
+  +      "number": 12,
+  +      "object_size": "4 Bit",
+  +      "text": ""
+  +    },
+  +    "1.0.1/MD-2_M-3_MI-1_O-2-0_R-10": {
+  +      "channel": "MD-2_M-3_MI-1_CH-argCH",
+  +      "description": "",
+  +      "device_address": "1.0.1",
+  +      "device_application": "M-00FA_A-2504-10-C071",
+  +      "dpas": null,
+  +      "dpts": [
+  +        {
+  +          "main": 1,
+  +          "sub": 8
+  +        }
+  +      ],
+  +      "flags": {
+  +        "communication": true,
+  +        "read": false,
+  +        "read_on_init": false,
+  +        "transmit": true,
+  +        "update": false,
+  +        "write": false
+  +      },
+  +      "function_text": "CH-{{argCH}} - Blinds Control : Move",
+  +      "group_address_links": [
+  +        "0/0/9"
+         ],
+         "module_def": {
+           "definition": "MD-2",
+           "root_number": 0
+         },
+         "name": "",
+  -      "number": 11,
+  -      "object_size": "1 Bit",
+  -      "text": ""
+  -    },
+  -    "1.0.1/MD-2_M-2_MI-1_O-2-1_R-7": {
+  -      "channel": "MD-2_M-2_MI-1_CH-argCH",
+  +      "number": 21,
+  +      "object_size": "1 Bit",
+  +      "text": ""
+  +    },
+  +    "1.0.1/MD-2_M-3_MI-1_O-2-1_R-11": {
+  +      "channel": "MD-2_M-3_MI-1_CH-argCH",
+         "description": "",
+         "device_address": "1.0.1",
+         "device_application": "M-00FA_A-2504-10-C071",
+         "dpas": null,
+         "dpts": [
+           {
+  +          "main": 1,
+  +          "sub": 7
+  +        }
+  +      ],
+  +      "flags": {
+  +        "communication": true,
+  +        "read": false,
+  +        "read_on_init": false,
+  +        "transmit": true,
+  +        "update": false,
+  +        "write": false
+  +      },
+  +      "function_text": "CH-{{argCH}} - Blinds Control : Step/Stop",
+  +      "group_address_links": [
+  +        "0/0/10"
+  +      ],
+  +      "module_def": {
+  +        "definition": "MD-2",
+  +        "root_number": 1
+  +      },
+  +      "name": "",
+  +      "number": 22,
+  +      "object_size": "1 Bit",
+  +      "text": ""
+  +    },
+  +    "1.0.1/MD-2_M-4_MI-1_O-2-0_R-4": {
+  +      "channel": "MD-2_M-4_MI-1_CH-argCH",
+  +      "description": "",
+  +      "device_address": "1.0.1",
+  +      "device_application": "M-00FA_A-2504-10-C071",
+  +      "dpas": null,
+  +      "dpts": [
+  +        {
+  +          "main": 1,
+  +          "sub": 1
+  +        }
+  +      ],
+  +      "flags": {
+  +        "communication": true,
+  +        "read": false,
+  +        "read_on_init": false,
+  +        "transmit": true,
+  +        "update": false,
+  +        "write": false
+  +      },
+  +      "function_text": "CH-{{argCH}} - Switching : OnOff",
+  +      "group_address_links": [
+  +        "0/0/2"
+  +      ],
+  +      "module_def": {
+  +        "definition": "MD-2",
+  +        "root_number": 0
+  +      },
+  +      "name": "",
+  +      "number": 31,
+  +      "object_size": "1 Bit",
+  +      "text": ""
+  +    },
+  +    "1.0.1/MD-2_M-4_MI-1_O-2-2_R-5": {
+  +      "channel": "MD-2_M-4_MI-1_CH-argCH",
+  +      "description": "",
+  +      "device_address": "1.0.1",
+  +      "device_application": "M-00FA_A-2504-10-C071",
+  +      "dpas": null,
+  +      "dpts": [
+  +        {
+  +          "main": 1,
+  +          "sub": 1
+  +        }
+  +      ],
+  +      "flags": {
+  +        "communication": true,
+  +        "read": false,
+  +        "read_on_init": false,
+  +        "transmit": false,
+  +        "update": false,
+  +        "write": true
+  +      },
+  +      "function_text": "CH-{{argCH}} - Switching : Feedback",
+  +      "group_address_links": [
+  +        "0/0/3"
+  +      ],
+  +      "module_def": {
+  +        "definition": "MD-2",
+  +        "root_number": 2
+  +      },
+  +      "name": "",
+  +      "number": 33,
+  +      "object_size": "1 Bit",
+  +      "text": ""
+  +    },
+  +    "1.0.1/MD-2_M-5_MI-1_O-2-0_R-6": {
+  +      "channel": "MD-2_M-5_MI-1_CH-argCH",
+  +      "description": "",
+  +      "device_address": "1.0.1",
+  +      "device_application": "M-00FA_A-2504-10-C071",
+  +      "dpas": null,
+  +      "dpts": [
+  +        {
+  +          "main": 1,
+  +          "sub": 1
+  +        }
+  +      ],
+  +      "flags": {
+  +        "communication": true,
+  +        "read": false,
+  +        "read_on_init": false,
+  +        "transmit": true,
+  +        "update": false,
+  +        "write": false
+  +      },
+  +      "function_text": "CH-{{argCH}} - Dimming : OnOff",
+  +      "group_address_links": [
+  +        "0/0/6"
+  +      ],
+  +      "module_def": {
+  +        "definition": "MD-2",
+  +        "root_number": 0
+  +      },
+  +      "name": "",
+  +      "number": 41,
+  +      "object_size": "1 Bit",
+  +      "text": ""
+  +    },
+  +    "1.0.1/MD-2_M-5_MI-1_O-2-1_R-7": {
+  +      "channel": "MD-2_M-5_MI-1_CH-argCH",
+  +      "description": "",
+  +      "device_address": "1.0.1",
+  +      "device_application": "M-00FA_A-2504-10-C071",
+  +      "dpas": null,
+  +      "dpts": [
+  +        {
+             "main": 3,
+             "sub": 7
+           }
+  @@ -89,19 +254,19 @@
+         },
+         "function_text": "CH-{{argCH}} - Dimming : Dimming Control",
+         "group_address_links": [
+  -        "0/0/5"
+  +        "0/0/7"
+         ],
+         "module_def": {
+           "definition": "MD-2",
+           "root_number": 1
+         },
+         "name": "",
+  -      "number": 12,
+  +      "number": 42,
+         "object_size": "4 Bit",
+         "text": ""
+       },
+  -    "1.0.1/MD-2_M-3_MI-1_O-2-0_R-10": {
+  -      "channel": "MD-2_M-3_MI-1_CH-argCH",
+  +    "1.0.1/MD-2_M-5_MI-1_O-2-2_R-8": {
+  +      "channel": "MD-2_M-5_MI-1_CH-argCH",
+         "description": "",
+         "device_address": "1.0.1",
+         "device_application": "M-00FA_A-2504-10-C071",
+  @@ -109,6 +274,39 @@
+         "dpts": [
+           {
+             "main": 1,
+  +          "sub": 1
+  +        }
+  +      ],
+  +      "flags": {
+  +        "communication": true,
+  +        "read": false,
+  +        "read_on_init": false,
+  +        "transmit": false,
+  +        "update": false,
+  +        "write": true
+  +      },
+  +      "function_text": "CH-{{argCH}} - Dimming : Feedback OnOff",
+  +      "group_address_links": [
+  +        "0/0/8"
+  +      ],
+  +      "module_def": {
+  +        "definition": "MD-2",
+  +        "root_number": 2
+  +      },
+  +      "name": "",
+  +      "number": 43,
+  +      "object_size": "1 Bit",
+  +      "text": ""
+  +    },
+  +    "1.0.1/MD-2_M-6_MI-1_O-2-0_R-10": {
+  +      "channel": "MD-2_M-6_MI-1_CH-argCH",
+  +      "description": "",
+  +      "device_address": "1.0.1",
+  +      "device_application": "M-00FA_A-2504-10-C071",
+  +      "dpas": null,
+  +      "dpts": [
+  +        {
+  +          "main": 1,
+             "sub": 8
+           }
+         ],
+  @@ -122,19 +320,19 @@
+         },
+         "function_text": "CH-{{argCH}} - Blinds Control : Move",
+         "group_address_links": [
+  -        "0/0/9"
+  +        "0/0/11"
+         ],
+         "module_def": {
+           "definition": "MD-2",
+           "root_number": 0
+         },
+         "name": "",
+  -      "number": 21,
+  -      "object_size": "1 Bit",
+  -      "text": ""
+  -    },
+  -    "1.0.1/MD-2_M-3_MI-1_O-2-1_R-11": {
+  -      "channel": "MD-2_M-3_MI-1_CH-argCH",
+  +      "number": 51,
+  +      "object_size": "1 Bit",
+  +      "text": ""
+  +    },
+  +    "1.0.1/MD-2_M-6_MI-1_O-2-1_R-11": {
+  +      "channel": "MD-2_M-6_MI-1_CH-argCH",
+         "description": "",
+         "device_address": "1.0.1",
+         "device_application": "M-00FA_A-2504-10-C071",
+  @@ -155,26 +353,26 @@
+         },
+         "function_text": "CH-{{argCH}} - Blinds Control : Step/Stop",
+         "group_address_links": [
+  -        "0/0/10"
+  +        "0/0/12"
+         ],
+         "module_def": {
+           "definition": "MD-2",
+           "root_number": 1
+         },
+         "name": "",
+  -      "number": 22,
+  -      "object_size": "1 Bit",
+  -      "text": ""
+  -    },
+  -    "1.0.1/MD-2_M-4_MI-1_O-2-0_R-4": {
+  -      "channel": "MD-2_M-4_MI-1_CH-argCH",
+  +      "number": 52,
+  +      "object_size": "1 Bit",
+  +      "text": ""
+  +    },
+  +    "1.0.1/MD-2_M-6_MI-1_O-2-2_R-12": {
+  +      "channel": "MD-2_M-6_MI-1_CH-argCH",
+         "description": "",
+         "device_address": "1.0.1",
+         "device_application": "M-00FA_A-2504-10-C071",
+         "dpas": null,
+         "dpts": [
+           {
+  -          "main": 1,
+  +          "main": 5,
+             "sub": 1
+           }
+         ],
+  @@ -182,250 +380,19 @@
+           "communication": true,
+           "read": false,
+           "read_on_init": false,
+  -        "transmit": true,
+  -        "update": false,
+  -        "write": false
+  -      },
+  -      "function_text": "CH-{{argCH}} - Switching : OnOff",
+  -      "group_address_links": [
+  -        "0/0/2"
+  -      ],
+  -      "module_def": {
+  -        "definition": "MD-2",
+  -        "root_number": 0
+  -      },
+  -      "name": "",
+  -      "number": 31,
+  -      "object_size": "1 Bit",
+  -      "text": ""
+  -    },
+  -    "1.0.1/MD-2_M-4_MI-1_O-2-2_R-5": {
+  -      "channel": "MD-2_M-4_MI-1_CH-argCH",
+  -      "description": "",
+  -      "device_address": "1.0.1",
+  -      "device_application": "M-00FA_A-2504-10-C071",
+  -      "dpas": null,
+  -      "dpts": [
+  -        {
+  -          "main": 1,
+  -          "sub": 1
+  -        }
+  -      ],
+  -      "flags": {
+  -        "communication": true,
+  -        "read": false,
+  -        "read_on_init": false,
+           "transmit": false,
+           "update": false,
+           "write": true
+         },
+  -      "function_text": "CH-{{argCH}} - Switching : Feedback",
+  -      "group_address_links": [
+  -        "0/0/3"
+  +      "function_text": "CH-{{argCH}} - Blinds Control : Feedback",
+  +      "group_address_links": [
+  +        "0/0/13"
+         ],
+         "module_def": {
+           "definition": "MD-2",
+           "root_number": 2
+         },
+         "name": "",
+  -      "number": 33,
+  -      "object_size": "1 Bit",
+  -      "text": ""
+  -    },
+  -    "1.0.1/MD-2_M-5_MI-1_O-2-0_R-6": {
+  -      "channel": "MD-2_M-5_MI-1_CH-argCH",
+  -      "description": "",
+  -      "device_address": "1.0.1",
+  -      "device_application": "M-00FA_A-2504-10-C071",
+  -      "dpas": null,
+  -      "dpts": [
+  -        {
+  -          "main": 1,
+  -          "sub": 1
+  -        }
+  -      ],
+  -      "flags": {
+  -        "communication": true,
+  -        "read": false,
+  -        "read_on_init": false,
+  -        "transmit": true,
+  -        "update": false,
+  -        "write": false
+  -      },
+  -      "function_text": "CH-{{argCH}} - Dimming : OnOff",
+  -      "group_address_links": [
+  -        "0/0/6"
+  -      ],
+  -      "module_def": {
+  -        "definition": "MD-2",
+  -        "root_number": 0
+  -      },
+  -      "name": "",
+  -      "number": 41,
+  -      "object_size": "1 Bit",
+  -      "text": ""
+  -    },
+  -    "1.0.1/MD-2_M-5_MI-1_O-2-1_R-7": {
+  -      "channel": "MD-2_M-5_MI-1_CH-argCH",
+  -      "description": "",
+  -      "device_address": "1.0.1",
+  -      "device_application": "M-00FA_A-2504-10-C071",
+  -      "dpas": null,
+  -      "dpts": [
+  -        {
+  -          "main": 3,
+  -          "sub": 7
+  -        }
+  -      ],
+  -      "flags": {
+  -        "communication": true,
+  -        "read": false,
+  -        "read_on_init": false,
+  -        "transmit": true,
+  -        "update": false,
+  -        "write": false
+  -      },
+  -      "function_text": "CH-{{argCH}} - Dimming : Dimming Control",
+  -      "group_address_links": [
+  -        "0/0/7"
+  -      ],
+  -      "module_def": {
+  -        "definition": "MD-2",
+  -        "root_number": 1
+  -      },
+  -      "name": "",
+  -      "number": 42,
+  -      "object_size": "4 Bit",
+  -      "text": ""
+  -    },
+  -    "1.0.1/MD-2_M-5_MI-1_O-2-2_R-8": {
+  -      "channel": "MD-2_M-5_MI-1_CH-argCH",
+  -      "description": "",
+  -      "device_address": "1.0.1",
+  -      "device_application": "M-00FA_A-2504-10-C071",
+  -      "dpas": null,
+  -      "dpts": [
+  -        {
+  -          "main": 1,
+  -          "sub": 1
+  -        }
+  -      ],
+  -      "flags": {
+  -        "communication": true,
+  -        "read": false,
+  -        "read_on_init": false,
+  -        "transmit": false,
+  -        "update": false,
+  -        "write": true
+  -      },
+  -      "function_text": "CH-{{argCH}} - Dimming : Feedback OnOff",
+  -      "group_address_links": [
+  -        "0/0/8"
+  -      ],
+  -      "module_def": {
+  -        "definition": "MD-2",
+  -        "root_number": 2
+  -      },
+  -      "name": "",
+  -      "number": 43,
+  -      "object_size": "1 Bit",
+  -      "text": ""
+  -    },
+  -    "1.0.1/MD-2_M-6_MI-1_O-2-0_R-10": {
+  -      "channel": "MD-2_M-6_MI-1_CH-argCH",
+  -      "description": "",
+  -      "device_address": "1.0.1",
+  -      "device_application": "M-00FA_A-2504-10-C071",
+  -      "dpas": null,
+  -      "dpts": [
+  -        {
+  -          "main": 1,
+  -          "sub": 8
+  -        }
+  -      ],
+  -      "flags": {
+  -        "communication": true,
+  -        "read": false,
+  -        "read_on_init": false,
+  -        "transmit": true,
+  -        "update": false,
+  -        "write": false
+  -      },
+  -      "function_text": "CH-{{argCH}} - Blinds Control : Move",
+  -      "group_address_links": [
+  -        "0/0/11"
+  -      ],
+  -      "module_def": {
+  -        "definition": "MD-2",
+  -        "root_number": 0
+  -      },
+  -      "name": "",
+  -      "number": 51,
+  -      "object_size": "1 Bit",
+  -      "text": ""
+  -    },
+  -    "1.0.1/MD-2_M-6_MI-1_O-2-1_R-11": {
+  -      "channel": "MD-2_M-6_MI-1_CH-argCH",
+  -      "description": "",
+  -      "device_address": "1.0.1",
+  -      "device_application": "M-00FA_A-2504-10-C071",
+  -      "dpas": null,
+  -      "dpts": [
+  -        {
+  -          "main": 1,
+  -          "sub": 7
+  -        }
+  -      ],
+  -      "flags": {
+  -        "communication": true,
+  -        "read": false,
+  -        "read_on_init": false,
+  -        "transmit": true,
+  -        "update": false,
+  -        "write": false
+  -      },
+  -      "function_text": "CH-{{argCH}} - Blinds Control : Step/Stop",
+  -      "group_address_links": [
+  -        "0/0/12"
+  -      ],
+  -      "module_def": {
+  -        "definition": "MD-2",
+  -        "root_number": 1
+  -      },
+  -      "name": "",
+  -      "number": 52,
+  -      "object_size": "1 Bit",
+  -      "text": ""
+  -    },
+  -    "1.0.1/MD-2_M-6_MI-1_O-2-2_R-12": {
+  -      "channel": "MD-2_M-6_MI-1_CH-argCH",
+  -      "description": "",
+  -      "device_address": "1.0.1",
+  -      "device_application": "M-00FA_A-2504-10-C071",
+  -      "dpas": null,
+  -      "dpts": [
+  -        {
+  -          "main": 5,
+  -          "sub": 1
+  -        }
+  -      ],
+  -      "flags": {
+  -        "communication": true,
+  -        "read": false,
+  -        "read_on_init": false,
+  -        "transmit": false,
+  -        "update": false,
+  -        "write": true
+  -      },
+  -      "function_text": "CH-{{argCH}} - Blinds Control : Feedback",
+  -      "group_address_links": [
+  -        "0/0/13"
+  -      ],
+  -      "module_def": {
+  -        "definition": "MD-2",
+  -        "root_number": 2
+  -      },
+  -      "name": "",
+         "number": 53,
+         "object_size": "1 Byte",
+         "text": ""
+  @@ -526,39 +493,6 @@
+         },
+         "name": "",
+         "number": 12,
+  -      "object_size": "1 Bit",
+  -      "text": ""
+  -    },
+  -    "1.0.3/MD-1_M-1_MI-1_O-2-0_R-1": {
+  -      "channel": "MD-1_M-1_MI-1_CH-argCH",
+  -      "description": "",
+  -      "device_address": "1.0.3",
+  -      "device_application": "M-00FA_A-2500-10-51CB",
+  -      "dpas": null,
+  -      "dpts": [
+  -        {
+  -          "main": 1,
+  -          "sub": 1
+  -        }
+  -      ],
+  -      "flags": {
+  -        "communication": true,
+  -        "read": false,
+  -        "read_on_init": false,
+  -        "transmit": false,
+  -        "update": false,
+  -        "write": true
+  -      },
+  -      "function_text": "CH-{{argCH}} : OnOff",
+  -      "group_address_links": [
+  -        "0/0/4"
+  -      ],
+  -      "module_def": {
+  -        "definition": "MD-1",
+  -        "root_number": 0
+  -      },
+  -      "name": "",
+  -      "number": 1,
+         "object_size": "1 Bit",
+         "text": ""
+       },
+  @@ -938,7 +872,6 @@
+         },
+         "communication_object_ids": [
+           "1.0.1/MD-2_M-1_MI-1_O-2-0_R-4",
+  -        "1.0.1/MD-2_M-2_MI-1_O-2-0_R-6",
+           "1.0.1/MD-2_M-2_MI-1_O-2-1_R-7",
+           "1.0.1/MD-2_M-3_MI-1_O-2-0_R-10",
+           "1.0.1/MD-2_M-3_MI-1_O-2-1_R-11",
+  @@ -1127,7 +1060,6 @@
+           }
+         },
+         "communication_object_ids": [
+  -        "1.0.3/MD-1_M-1_MI-1_O-2-0_R-1",
+           "1.0.3/MD-1_M-1_MI-1_O-2-1_R-2",
+           "1.0.3/MD-1_M-2_MI-1_O-2-0_R-1",
+           "1.0.3/MD-1_M-2_MI-1_O-2-1_R-2",
+  @@ -1374,10 +1306,7 @@
+       "0/0/4": {
+         "address": "0/0/4",
+         "comment": "",
+  -      "communication_object_ids": [
+  -        "1.0.1/MD-2_M-2_MI-1_O-2-0_R-6",
+  -        "1.0.3/MD-1_M-1_MI-1_O-2-0_R-1"
+  -      ],
+  +      "communication_object_ids": [],
+         "data_secure": false,
+         "description": "",
+         "dpt": {
+  
+  '''
+# ---

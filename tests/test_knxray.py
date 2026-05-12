@@ -4,7 +4,7 @@ from contextlib import redirect_stdout
 from pathlib import Path
 from unittest.mock import patch
 
-_FIXTURES = Path(__file__).parent / "fixtures"
+_FIXTURES = Path("tests/fixtures")
 _DEMO = _FIXTURES / "demo.knxproj"
 _DEMO_GA_ADDED = _FIXTURES / "demo-ga-added.knxproj"
 _DEMO_DEVICE_PARAM = _FIXTURES / "demo-device-param.knxproj"
@@ -44,3 +44,8 @@ def test_invisible_diff():
     stdout, stderr = _diff(_DEMO, _DEMO_DEVICE_PARAM)
     assert not stdout.strip()
     assert "WARNING" in stderr
+
+
+def test_diff_snapshot(snapshot):
+    stdout, _ = _diff(_DEMO, _DEMO_GA_ADDED)
+    assert stdout == snapshot
