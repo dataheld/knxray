@@ -7,7 +7,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(prog="knxray")
     subparsers = parser.add_subparsers(dest="command")
 
-    show_p = subparsers.add_parser("show", help="Parse → sorted JSON to stdout")
+    show_p = subparsers.add_parser("show", help="Parse → JSON (xknxproject) to stdout")
     show_p.add_argument("file", metavar="<file.knxproj>")
 
     diff_p = subparsers.add_parser("diff", help="JSON diff to stdout")

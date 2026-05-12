@@ -48,7 +48,7 @@ def _json_diff(path1: Path, path2: Path) -> list[str]:
     )
 
 
-def diff(path1: Path, path2: Path) -> None:
+def diff(path1: Path, path2: Path, level: str = "json") -> None:  # noqa: ARG001 (level unused until more levels exist)
     if _bytes_identical(path1, path2):      # level 1
         return
     if _xml_identical(path1, path2):        # level 2
