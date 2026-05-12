@@ -14,6 +14,48 @@ it converts some of the parts of a `*.knxproj` that can be extracted (group addr
 > A clean diff here does **not** mean the `.knxproj` files are identical.
 > To highlight these "false negatives", `knxray diff` emits a warning when the `*.knxproj` files differ, but the parsed JSON does not.
 
+## How diffing works
+
+A `.knxproj` file is a zip archive containing XML.
+Comparing two of them is not as simple as a byte-for-byte check — ETS rewrites internal metadata files (`.validation`, `.certificate`) on every save, even when the project hasn't changed.
+knxray therefore applies a cascade of checks, stopping as soon as the two files are considered equivalent at that level:
+
+```mermaid
+flowchart TD
+    A(["knxray diff A B"]) --> byte
+
+    byte{"1 · byte-identical?"}
+    byte -->|yes| done_byte(["no output"])
+    byte -->|no| xml
+
+    xml{"2 · XML-identical?\nexcl. non-deterministic\nETS metadata"}
+    xml -->|yes| done_xml(["no output"])
+    xml -->|no| xmlsem
+
+    xmlsem{"3 · XML semantically\nidentical?\n— planned —"}
+    xmlsem -->|yes| done_xmlsem(["no output"])
+    xmlsem -->|no| json
+
+    json{"4 · parsed JSON\nidentical?\nxknxproject"}
+    json -->|yes| warn(["⚠ warn to stderr:\nXML differs but\nparser is blind to it"])
+    json -->|no| out(["print JSON diff\nto stdout"])
+```
+
+**Why four levels?**
+
+| Level | What it catches | What it misses |
+| --- | --- | --- |
+| 1 · byte | anything | — |
+| 2 · XML-byte | real project changes | XML whitespace / attribute-order noise |
+| 3 · XML semantic *(planned)* | all XML-level changes | — |
+| 4 · JSON (xknxproject) | group addresses, devices, comm. objects | device parameters, some ETS settings |
+
+For each of these levels, if a lower level finds no change, all later levels can be skipped.
+The warning at step 4 ("XML differs but the parser is blind to it") disappears once level 3 is implemented, because level 3 will have already surfaced those differences.
+
+This is the same approach used for diffing Office documents (`.docx`, `.xlsx`) via git `textconv`:
+a semantic parser (e.g. pandoc) extracts the meaningful content; the surrounding zip metadata is silently ignored.
+
 ## Commands
 
 | Command | Purpose |

@@ -1,5 +1,5 @@
 # serializer version: 1
-# name: test_diff_snapshot
+# name: test_diff_cascade_json_diff_snapshot
   '''
   --- tests/fixtures/demo.knxproj
   +++ tests/fixtures/demo-ga-removed.knxproj
