@@ -49,8 +49,9 @@ The diff cascade (levels 1-4 in the README) and the `--level` flag are related b
 - The **`--level` flag** selects which extraction to use for the output (show or diff).
   Currently that is always `json`; in future a user could request `--level xml` to see raw XML diffs.
 
-When level 3 (xml-semantic) is implemented, the diff cascade will use it internally,
-and `knxray diff --level xml-semantic` will also expose it explicitly.
+The flag and the cascade level differ in that the flag let's you choose a *lower* level, than what the cascade would have arrived at.
+For example, whenever the cascade proceeds to `json`, a user can always choose (something like ) `knxray diff --level xml` (not implemented yet).
+This isn't a terribly likely use case, because lower levels tend to be less human-readable and therefore less useful for diffing, but it's still conceptually possible.
 
 ## What we implement now
 
@@ -93,11 +94,24 @@ alongside the planned level 3.
 
 ## Acceptance criteria
 
-- [ ] `knxray show demo.knxproj` output unchanged.
-- [ ] `knxray diff` output unchanged.
-- [ ] `show(path, level="unknown")` raises `ValueError` with the supported choices listed.
-- [ ] All 12 tests pass.
-- [ ] Adding a new level in future requires only: one new `_show_<level>` function + one dict entry.
+- [x] `knxray show demo.knxproj` output unchanged.
+- [x] `knxray diff` output unchanged.
+- [x] `show(path, level="unknown")` raises `ValueError` with the supported choices listed.
+- [x] All 12 tests pass.
+- [x] Adding a new level in future requires only: one new `_show_<level>` function + one dict entry.
+
+## Validation 2026-05-12
+
+All acceptance criteria met.
+Implementation matches the plan exactly:
+
+- `_show.py`: registry dict `_LEVELS`, `DEFAULT_LEVEL = "json"`, `show()` dispatches via dict.
+- `_diff.py`: `diff()` accepts `level` parameter (unused stub), cascade logic unchanged.
+- `_cli.py`: help text updated to "JSON (xknxproject)"; no `--level` flag added.
+- `README.md`: planned `--level` flag and level 3 noted in "How diffing works".
+- `PLAN.md`: committed before implementation per AGENTS.md spec-driven workflow.
+
+No deviations from the plan.
 
 ## Future plans
 
