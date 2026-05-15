@@ -6,30 +6,30 @@ from unittest.mock import patch
 
 # Fixture provenance
 # ------------------
-# All files derive from the official KNX demo project
-# (https://support.knx.org/hc/en-us/articles/9571360929810), opened and saved
-# once in ETS 6.4.1 to normalise the format.
+# A simple kitchen lighting project: one MDT switch actuator (1.1.1) and two
+# ABB push-button sensors (1.1.2, 1.1.3), with two group addresses:
+# "Direct Lighting" (0/0/1) and "Indirect Lighting" (0/0/2).
 #
 # Fixtures are designed to exercise each level of the diff cascade
 # (see README "How diffing works"):
 #
-#   demo.knxproj              — baseline
-#   demo-copy.knxproj         — byte-for-byte copy of demo → level 1 exit
-#   demo-resaved.knxproj      — independently saved in ETS without changes; ETS
-#                               rewrites .validation/.certificate so bytes differ,
-#                               but XML is identical → level 2 exit
-#   demo-ga-removed.knxproj   — one group address removed; XML and JSON differ
-#                               → level 4: visible JSON diff
-#   demo-device-param.knxproj — one device parameter changed; XML differs but
-#                               xknxproject does not parse device parameters
-#                               → level 4: XML differs, parser is blind, warn
+#   example.knxproj                  — baseline
+#   example-copy.knxproj             — byte-for-byte copy of example → level 1 exit
+#   example-resaved.knxproj          — independently saved in ETS without changes; ETS
+#                                      rewrites .validation/.certificate so bytes differ,
+#                                      but XML is identical → level 2 exit
+#   example-ga-changed.knxproj       — one group address changed; XML and JSON differ
+#                                      → level 4: visible JSON diff
+#   example-device-param-changed.knxproj — one device parameter changed; XML differs but
+#                                      xknxproject does not parse device parameters
+#                                      → level 4: XML differs, parser is blind, warn
 
 _FIXTURES = Path("tests/fixtures")
-_DEMO = _FIXTURES / "demo.knxproj"
-_DEMO_COPY = _FIXTURES / "demo-copy.knxproj"
-_DEMO_RESAVED = _FIXTURES / "demo-resaved.knxproj"
-_DEMO_GA_REMOVED = _FIXTURES / "demo-ga-removed.knxproj"
-_DEMO_DEVICE_PARAM = _FIXTURES / "demo-device-param.knxproj"
+_EXAMPLE = _FIXTURES / "example.knxproj"
+_EXAMPLE_COPY = _FIXTURES / "example-copy.knxproj"
+_EXAMPLE_RESAVED = _FIXTURES / "example-resaved.knxproj"
+_EXAMPLE_GA_CHANGED = _FIXTURES / "example-ga-removed.knxproj"
+_EXAMPLE_DEVICE_PARAM = _FIXTURES / "example-device-param-changed.knxproj"
 
 
 def _show(path):
@@ -51,11 +51,11 @@ def _diff(path1, path2):
 # --- show ---
 
 def test_show_valid_json():
-    json.loads(_show(_DEMO))
+    json.loads(_show(_EXAMPLE))
 
 
 def test_show_notice_field():
-    data = json.loads(_show(_DEMO))
+    data = json.loads(_show(_EXAMPLE))
     assert "_notice" in data and data["_notice"]
 
 
@@ -63,58 +63,58 @@ def test_show_notice_field():
 
 def test_diff_level1_byte_identical():
     from knxray._diff import _bytes_identical
-    assert _bytes_identical(_DEMO, _DEMO_COPY)
+    assert _bytes_identical(_EXAMPLE, _EXAMPLE_COPY)
 
 
 def test_diff_level1_bytes_differ():
     from knxray._diff import _bytes_identical
-    assert not _bytes_identical(_DEMO, _DEMO_RESAVED)
+    assert not _bytes_identical(_EXAMPLE, _EXAMPLE_RESAVED)
 
 
 # --- level 2: XML comparison (excl. ETS metadata) ---
 
 def test_diff_level2_xml_identical():
     from knxray._diff import _xml_identical
-    assert _xml_identical(_DEMO, _DEMO_RESAVED)
+    assert _xml_identical(_EXAMPLE, _EXAMPLE_RESAVED)
 
 
 def test_diff_level2_xml_differs():
     from knxray._diff import _xml_identical
-    assert not _xml_identical(_DEMO, _DEMO_GA_REMOVED)
+    assert not _xml_identical(_EXAMPLE, _EXAMPLE_GA_CHANGED)
 
 
 # --- level 4: xknxproject JSON diff ---
 
 def test_diff_level4_json_diff_found():
     from knxray._diff import _json_diff
-    assert _json_diff(_DEMO, _DEMO_GA_REMOVED)
+    assert _json_diff(_EXAMPLE, _EXAMPLE_GA_CHANGED)
 
 
 def test_diff_level4_json_diff_empty():
     from knxray._diff import _json_diff
-    assert not _json_diff(_DEMO, _DEMO_DEVICE_PARAM)
+    assert not _json_diff(_EXAMPLE, _EXAMPLE_DEVICE_PARAM)
 
 
 # --- integration: full diff() cascade ---
 
 def test_diff_cascade_exits_silently():
     # Byte-identical → cascade exits at level 1, no output of any kind.
-    stdout, stderr = _diff(_DEMO, _DEMO_COPY)
+    stdout, stderr = _diff(_EXAMPLE, _EXAMPLE_COPY)
     assert not stdout.strip() and not stderr.strip()
 
 
 def test_diff_cascade_outputs_json_diff():
-    # GA removed → XML and JSON differ → stdout diff at level 4.
-    stdout, _ = _diff(_DEMO, _DEMO_GA_REMOVED)
+    # GA changed → XML and JSON differ → stdout diff at level 4.
+    stdout, _ = _diff(_EXAMPLE, _EXAMPLE_GA_CHANGED)
     assert stdout.strip()
 
 
 def test_diff_cascade_warns_when_parser_blind():
     # Device param changed → XML differs, JSON identical → stderr warning at level 4.
-    stdout, stderr = _diff(_DEMO, _DEMO_DEVICE_PARAM)
+    stdout, stderr = _diff(_EXAMPLE, _EXAMPLE_DEVICE_PARAM)
     assert not stdout.strip() and stderr.strip()
 
 
 def test_diff_cascade_json_diff_snapshot(snapshot):
-    stdout, _ = _diff(_DEMO, _DEMO_GA_REMOVED)
+    stdout, _ = _diff(_EXAMPLE, _EXAMPLE_GA_CHANGED)
     assert stdout == snapshot
