@@ -134,10 +134,10 @@ def git_repo_with_knxproj(tmp_path):
     subprocess.run(["git", "config", "commit.gpgsign", "false"], cwd=tmp_path, check=True, capture_output=True)
     subprocess.run(["git", "config", "diff.knxray.textconv", "knxray show"], cwd=tmp_path, check=True, capture_output=True)
     (tmp_path / ".gitattributes").write_text("*.knxproj diff=knxray\n")
-    shutil.copy(_EXAMPLE, tmp_path / "my-installation.knxproj")
+    shutil.copyfile(_EXAMPLE, tmp_path / "my-installation.knxproj")
     subprocess.run(["git", "add", "."], cwd=tmp_path, check=True, capture_output=True)
     subprocess.run(["git", "commit", "-m", "initial project"], cwd=tmp_path, check=True, capture_output=True)
-    shutil.copy(_EXAMPLE_GA_CHANGED, tmp_path / "my-installation.knxproj")
+    shutil.copyfile(_EXAMPLE_GA_CHANGED, tmp_path / "my-installation.knxproj")
     yield tmp_path
 
 
