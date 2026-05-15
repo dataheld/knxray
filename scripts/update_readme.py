@@ -32,8 +32,7 @@ def main() -> None:
     snapshot = _extract_snapshot(_SNAPSHOT_NAME)
     block = (
         f"{_BEGIN}\n"
-        f"```console\n"
-        f"$ git diff HEAD -- my-installation.knxproj\n"
+        f"```diff\n"
         f"{snapshot}\n"
         f"```\n"
         f"{_END}"

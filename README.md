@@ -14,8 +14,7 @@ Binary files a/my-installation.knxproj and b/my-installation.knxproj differ
 With knxray installed and configured, the same command shows:
 
 <!-- BEGIN git-diff-example -->
-```console
-$ git diff HEAD -- my-installation.knxproj
+```diff
 diff --git a/my-installation.knxproj b/my-installation.knxproj
 index 255ab14..c04674e 100644
 --- a/my-installation.knxproj
