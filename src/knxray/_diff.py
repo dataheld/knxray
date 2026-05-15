@@ -3,16 +3,13 @@ import sys
 import zipfile
 from pathlib import Path
 
+from knxray._normalize import is_ignorable_filetype, normalize
 from knxray._parse import parse, to_json
-
-# ETS rewrites these files on every save regardless of project changes.
-_ETS_METADATA = {".validation", ".certificate", ".signature"}
 
 _WARN_BLIND = (
     "The project XML differs but xknxproject cannot surface the change.\n"
     "There may be differences such as device parameters that are not shown above."
 )
-
 
 def _bytes_identical(path1: Path, path2: Path) -> bool:
     """Level 1: full byte comparison (fastest exit)."""
@@ -20,13 +17,18 @@ def _bytes_identical(path1: Path, path2: Path) -> bool:
 
 
 def _xml_identical(path1: Path, path2: Path) -> bool:
-    """Level 2: compare only .xml entries, ignoring non-deterministic ETS metadata."""
+    """Level 2: compare all entries except ignorable filetypes, normalizing XML."""
     with zipfile.ZipFile(path1) as z1, zipfile.ZipFile(path2) as z2:
-        names1 = {n for n in z1.namelist() if n.endswith(".xml")}
-        names2 = {n for n in z2.namelist() if n.endswith(".xml")}
+        names1 = {n for n in z1.namelist() if not is_ignorable_filetype(n)}
+        names2 = {n for n in z2.namelist() if not is_ignorable_filetype(n)}
         if names1 != names2:
             return False
-        return all(z1.read(n) == z2.read(n) for n in names1)
+        for n in names1:
+            b1, b2 = z1.read(n), z2.read(n)
+            equal = (normalize(b1) == normalize(b2)) if n.endswith(".xml") else (b1 == b2)
+            if not equal:
+                return False
+        return True
 
 
 # Level 3: XML-semantic diff — planned. Would produce a human-readable summary
