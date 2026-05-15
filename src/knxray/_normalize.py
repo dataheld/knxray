@@ -1,12 +1,13 @@
 import xml.etree.ElementTree as ET
 from collections.abc import Callable
+from typing import TypeAlias
 
 # Normalization strips content we know to be non-deterministic ETS noise.
 # Be conservative: only strip what is fully understood and demonstrably
 # irrelevant to project content. When in doubt, leave it in and let the diff
 # surface it.
 
-_Normalizer = Callable[[ET.Element], None]
+_Normalizer: TypeAlias = Callable[[ET.Element], None]
 
 
 def _strip_last_modified_timestamps(root: ET.Element) -> None:
