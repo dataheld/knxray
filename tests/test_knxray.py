@@ -1,8 +1,12 @@
 import json
-from io import StringIO
+import shutil
+import subprocess
 from contextlib import redirect_stdout
+from io import StringIO
 from pathlib import Path
 from unittest.mock import patch
+
+import pytest
 
 # Fixture provenance
 # ------------------
@@ -118,3 +122,39 @@ def test_diff_cascade_warns_when_parser_blind():
 def test_diff_cascade_json_diff_snapshot(snapshot):
     stdout, _ = _diff(_EXAMPLE, _EXAMPLE_GA_CHANGED)
     assert stdout == snapshot
+
+
+# --- git textconv integration ---
+
+@pytest.fixture
+def git_repo_with_knxproj(tmp_path):
+    subprocess.run(["git", "init"], cwd=tmp_path, check=True, capture_output=True)
+    subprocess.run(["git", "config", "user.email", "test@example.com"], cwd=tmp_path, check=True, capture_output=True)
+    subprocess.run(["git", "config", "user.name", "Test User"], cwd=tmp_path, check=True, capture_output=True)
+    subprocess.run(["git", "config", "commit.gpgsign", "false"], cwd=tmp_path, check=True, capture_output=True)
+    subprocess.run(["git", "config", "diff.knxray.textconv", "knxray show"], cwd=tmp_path, check=True, capture_output=True)
+    (tmp_path / ".gitattributes").write_text("*.knxproj diff=knxray\n")
+    shutil.copy(_EXAMPLE, tmp_path / "my-installation.knxproj")
+    subprocess.run(["git", "add", "."], cwd=tmp_path, check=True, capture_output=True)
+    subprocess.run(["git", "commit", "-m", "initial project"], cwd=tmp_path, check=True, capture_output=True)
+    shutil.copy(_EXAMPLE_GA_CHANGED, tmp_path / "my-installation.knxproj")
+    yield tmp_path
+
+
+def _git_diff(repo):
+    return subprocess.run(
+        ["git", "diff", "HEAD", "--", "my-installation.knxproj"],
+        cwd=repo,
+        capture_output=True,
+        text=True,
+        check=True,
+    ).stdout
+
+
+def test_git_diff_textconv_snapshot(snapshot, git_repo_with_knxproj):
+    assert _git_diff(git_repo_with_knxproj) == snapshot
+
+
+def test_readme_shows_current_git_diff(git_repo_with_knxproj):
+    readme = Path("README.md").read_text(encoding="utf-8")
+    assert _git_diff(git_repo_with_knxproj) in readme

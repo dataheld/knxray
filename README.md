@@ -6,10 +6,79 @@ Installations are configured in [ETS](https://www.knx.org/knx-en/for-professiona
 Without knxray, committing a `*.knxproj` to git means `git diff` tells you nothing:
 
 ```console
-$ git diff HEAD~1 -- my-installation.knxproj
+$ git diff HEAD -- my-installation.knxproj
 diff --git a/my-installation.knxproj b/my-installation.knxproj
 Binary files a/my-installation.knxproj and b/my-installation.knxproj differ
 ```
+
+With knxray installed and configured, the same command shows:
+
+<!-- BEGIN git-diff-example -->
+```console
+$ git diff HEAD -- my-installation.knxproj
+diff --git a/my-installation.knxproj b/my-installation.knxproj
+index 255ab14..c04674e 100644
+--- a/my-installation.knxproj
++++ b/my-installation.knxproj
+@@ -153,36 +153,6 @@
+       "number": 1,
+       "object_size": "1 Bit",
+       "text": "S1.1: Schalten (steigende Flanke)"
+-    },
+-    "1.1.3/O-3_R-36": {
+-      "channel": "CH-2",
+-      "description": "",
+-      "device_address": "1.1.3",
+-      "device_application": "M-0007_A-6125-96-F910",
+-      "dpas": null,
+-      "dpts": [
+-        {
+-          "main": 1,
+-          "sub": 1
+-        }
+-      ],
+-      "flags": {
+-        "communication": true,
+-        "read": false,
+-        "read_on_init": false,
+-        "transmit": true,
+-        "update": true,
+-        "write": true
+-      },
+-      "function_text": "Input/Output",
+-      "group_address_links": [
+-        "0/0/2"
+-      ],
+-      "module_def": null,
+-      "name": "Obj_Wert_steigendeFlanke",
+-      "number": 3,
+-      "object_size": "1 Bit",
+-      "text": "S1.2: Schalten (steigende Flanke)"
+     }
+   },
+   "devices": {
+@@ -311,8 +281,7 @@
+         }
+       },
+       "communication_object_ids": [
+-        "1.1.3/O-1_R-17",
+-        "1.1.3/O-3_R-36"
++        "1.1.3/O-1_R-17"
+       ],
+       "description": "Countertop",
+       "hardware_name": "6125/01 ctrl. el., solo\u00ae stand., 1gang, fl. mtd.",
+@@ -349,8 +318,7 @@
+       "comment": "",
+       "communication_object_ids": [
+         "1.1.1/O-0_R-16",
+-        "1.1.2/O-3_R-36",
+-        "1.1.3/O-3_R-36"
++        "1.1.2/O-3_R-36"
+       ],
+       "data_secure": false,
+       "description": "",
+```
+<!-- END git-diff-example -->
 
 knxray makes those files *somewhat* more transparent:
 it uses [xknxproject](https://github.com/XKNX/xknxproject) to convert the parts of a `*.knxproj` that can be extracted (group addresses, devices, communication objects) into sorted, stable JSON, which git can then diff normally.

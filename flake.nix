@@ -98,7 +98,7 @@
           testVenv = pythonSets.${system}.mkVirtualEnv "knxray-test-env" workspace.deps.all;
         in
         {
-          pytest = pkgs.runCommand "knxray-pytest" { nativeBuildInputs = [ testVenv ]; } ''
+          pytest = pkgs.runCommand "knxray-pytest" { nativeBuildInputs = [ testVenv pkgs.git ]; } ''
             export HOME=$(mktemp -d)
             pytest ${self}/tests -v --tb=short -p no:cacheprovider
             touch $out
