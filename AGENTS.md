@@ -48,10 +48,18 @@ In that case, a short comment in the code is in order.
 
 ## Formatting
 
+### Text
+
+If something is some kind of an enumeration of similar parts, always use a list.
+
 Unless the chosen or typical formatter for a file extension says otherwise:
 
 - Always linebreak text after a period or a colon.
 - Avoid more than one empty consecutive line.
+
+#### Markdown
+
+- Do not add empty lines between items in a list.
 
 ## Style & Paradigm
 
