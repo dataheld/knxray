@@ -107,3 +107,13 @@ Under the hood this uses git's [`textconv` driver](https://git-scm.com/docs/gita
 
 > [!NOTE]
 > GitHub and GitLab web UIs do not use `textconv`, so `git diff` integration only works locally.
+
+## Related work
+
+- **[AutoBackup](https://it-gmbh.de/en/knx/ets-apps/autobackup/) by IT GmbH** (paid, ETS5/6) — automatically exports a `.knxproj` file to a configurable folder whenever you close a project.
+  Pairs naturally with knxray: AutoBackup handles the export step, knxray handles the diff.
+  ETS 6.4+ also ships a built-in [Auto Backup to Archive](https://support.knx.org/hc/en-us/articles/31061986226450-ETS-v6-4-0) feature at no extra cost, though it stores versions inside ETS's own archive rather than writing a standalone file to a configurable path.
+- **[Project Tracing](https://my.knx.org/shop/product?product_type_category=etsapps&product_type=project-tracing)** by KNX Association (paid, ETS5/6) — logs every user action inside a project (downloads, parameter changes) with timestamps and user identity.
+  Think audit trail, not diff view.
+- **[Project Comparison](https://it-gmbh.de/en/knx/ets-apps/project-comparison/) by IT GmbH** (paid, ETS5 only) — compares two project snapshots and lists all differences, with direct navigation to changed elements.
+  The closest ETS-native equivalent to knxray's diff output, but not available for ETS6.
