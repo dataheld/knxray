@@ -25,7 +25,6 @@
         python.enable = true;
         quarto = {
           enable = true;
-          root = ./docs;
           brand.enable = true;
         };
         cloudflare = {

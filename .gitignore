@@ -26,8 +26,11 @@ result-*
 /.vscode/extensions.json
 /.vscode/mcp.json
 /.vscode/settings.json
-/docs/_brand
-/docs/_extensions/nkdocs
-/docs/_extensions/nullkomma-brand
-/docs/_nullkomma-brand.yml
-/docs/privacy.qmd
+/_brand
+/_extensions/nkdocs
+/_extensions/nullkomma-brand
+/_nullkomma-brand.yml
+/privacy.qmd
+
+/.quarto/
+**/*.quarto_ipynb
