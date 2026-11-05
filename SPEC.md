@@ -18,6 +18,9 @@ ETS rewrites certain files on every save regardless of whether the user changed 
 `.validation`, `.certificate`, `.signature`.
 Byte-for-byte comparison of `.knxproj` files is therefore unreliable as a "no change" signal.
 Level 2 of the diff cascade excludes these files explicitly.
+It also removes `LastModified` XML attributes and `ProjectTrace` audit entries
+before comparing serialized XML.
+This normalization is not a full XML-semantic comparison.
 
 ## Name
 
@@ -86,8 +89,11 @@ JSON output must be reproducible across ETS saves that make no logical change:
    One combined object, not split by section.
    Simpler architecture; larger but consistent diffs.
 
-5. **Nix-only distribution.**
-   No pip/conda packaging.
+5. **One Python package for both distribution paths.**
+   Hatchling builds ordinary wheels and source distributions.
+   Nix uses the same package and locked runtime dependencies.
+   PyPI publication is not configured.
+   `setup` requires git on the caller's `PATH`.
 
 6. **`--format` flag deferred.**
    Output format tied to level for now; separated only when a concrete second format exists.

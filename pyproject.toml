@@ -1,12 +1,21 @@
 [build-system]
-requires = ["hatchling", "editables"]
+requires = ["hatchling>=1.27", "editables"]
 build-backend = "hatchling.build"
 
 [project]
 name = "knxray"
 version = "0.1.0"
+description = "Readable JSON diffs for KNX ETS project files"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.10"
 dependencies = ["xknxproject"]
+
+[project.urls]
+Documentation = "https://knxray.maxheld.de"
+Repository = "https://github.com/dataheld/knxray"
+Issues = "https://github.com/dataheld/knxray/issues"
 
 [project.scripts]
 knxray = "knxray._cli:main"
