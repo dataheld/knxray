@@ -18,7 +18,10 @@
 
       nullkomma = {
         gitignore = [ ".claude/" ];
-        lint.markdown.MD033.allowed-elements = [ "img" ];
+        lint.markdown = {
+          MD013 = false;
+          MD033.allowed-elements = [ "img" ];
+        };
         python.enable = true;
         quarto = {
           enable = true;
