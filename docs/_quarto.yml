@@ -11,6 +11,7 @@ metadata-files:
 website:
   title: knxray
   site-url: https://knxray.maxheld.de
+  repo-url: https://github.com/dataheld/knxray
   navbar:
     logo: logo.svg
     left:
