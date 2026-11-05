@@ -30,7 +30,7 @@ def _extract_snapshot(name: str) -> str:
 
 def main() -> None:
     snapshot = _extract_snapshot(_SNAPSHOT_NAME)
-    block = f"{_BEGIN}\n```diff\n{snapshot}\n```\n{_END}"
+    block = f"{_BEGIN}\n\n```diff\n{snapshot}\n```\n\n{_END}"
     readme = _README.read_text(encoding="utf-8")
     updated = re.sub(
         rf"{re.escape(_BEGIN)}.*?{re.escape(_END)}",
