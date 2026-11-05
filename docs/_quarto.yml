@@ -12,6 +12,7 @@ website:
   title: knxray
   site-url: https://knxray.maxheld.de
   repo-url: https://github.com/dataheld/knxray
+  repo-subdir: docs
   navbar:
     logo: logo.svg
     left:

@@ -1,4 +1,6 @@
-# knxray <img src="logo.svg" align="right" height="140" alt="knxray logo"/>
+# knxray
+
+<img src="logo.svg" align="right" height="140" alt="knxray logo"/>
 
 [KNX](https://www.knx.org) is a building-automation standard for lighting,
 heating, blinds, and similar systems.
