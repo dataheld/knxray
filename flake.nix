@@ -41,11 +41,10 @@
       };
 
       perSystem =
-        { config, pkgs, ... }:
+        { pkgs, ... }:
         {
           nullkomma.python.test.packages = [ pkgs.git ];
           nullkomma.editor.vscode.settings."files.associations"."*.ambr" = "json";
-          checks.pytest = config.checks.python-test;
         };
     };
 }
