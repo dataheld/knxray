@@ -2,6 +2,9 @@
 requires = ["hatchling>=1.27", "editables"]
 build-backend = "hatchling.build"
 
+[dependency-groups]
+dev = ["pytest", "pytest-cov", "syrupy"]
+
 [project]
 name = "knxray"
 version = "0.1.0"
@@ -12,13 +15,13 @@ license-files = ["LICENSE"]
 requires-python = ">=3.10"
 dependencies = ["xknxproject"]
 
+[project.scripts]
+knxray = "knxray._cli:main"
+
 [project.urls]
 Documentation = "https://knxray.maxheld.de"
 Repository = "https://github.com/dataheld/knxray"
 Issues = "https://github.com/dataheld/knxray/issues"
 
-[project.scripts]
-knxray = "knxray._cli:main"
-
-[dependency-groups]
-dev = ["pytest", "syrupy"]
+[tool.coverage.run]
+source = ["knxray"]

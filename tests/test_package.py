@@ -11,7 +11,7 @@ def test_distribution_metadata() -> None:
     assert metadata["License-Expression"] == "MIT"
     assert metadata.get_all("License-File") == ["LICENSE"]
     assert metadata["Description-Content-Type"] == "text/markdown"
-    assert "# knxray" in metadata.get_payload()
+    assert "# knxray" in metadata["Description"]
     assert "Repository, https://github.com/dataheld/knxray" in metadata.get_all(
         "Project-URL", []
     )

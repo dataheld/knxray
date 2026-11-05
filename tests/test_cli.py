@@ -21,9 +21,7 @@ def _run(*args: str) -> subprocess.CompletedProcess[str]:
         (["show", "missing.knxproj"], 1, False, True),
     ],
 )
-def test_cli_errors(
-    args: list[str], status: int, stdout: bool, stderr: bool
-) -> None:
+def test_cli_errors(args: list[str], status: int, stdout: bool, stderr: bool) -> None:
     result = _run(*args)
     assert result.returncode == status
     assert bool(result.stdout) == stdout

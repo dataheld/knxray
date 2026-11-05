@@ -11,9 +11,15 @@ _NOTICE = (
 
 def parse(path: Path) -> dict:
     project = XKNXProj(path=str(path), language="en-US").parse()
-    # last_modified changes on every ETS save regardless of user intent — omit to keep diffs clean
-    project.get("info", {}).pop("last_modified", None)
-    return {"_notice": _NOTICE, **project}
+    normalized: dict[str, object] = {"_notice": _NOTICE, **project}
+    # Ignore ETS save timestamps for stable diffs.
+    if "info" in project:
+        normalized["info"] = {
+            key: value
+            for key, value in project["info"].items()
+            if key != "last_modified"
+        }
+    return normalized
 
 
 def to_json(data: dict) -> str:

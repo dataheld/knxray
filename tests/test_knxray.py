@@ -38,6 +38,7 @@ _EXAMPLE_DEVICE_PARAM = _FIXTURES / "example-device-param-changed.knxproj"
 
 def _show(path):
     from knxray._show import show
+
     buf = StringIO()
     with redirect_stdout(buf):
         show(path)
@@ -46,6 +47,7 @@ def _show(path):
 
 def _diff(path1, path2):
     from knxray._diff import diff
+
     out, err = StringIO(), StringIO()
     with redirect_stdout(out), patch("sys.stderr", err):
         diff(path1, path2)
@@ -53,6 +55,7 @@ def _diff(path1, path2):
 
 
 # --- show ---
+
 
 def test_show_valid_json():
     json.loads(_show(_EXAMPLE))
@@ -65,41 +68,51 @@ def test_show_notice_field():
 
 # --- level 1: byte comparison ---
 
+
 def test_diff_level1_byte_identical():
     from knxray._diff import _bytes_identical
+
     assert _bytes_identical(_EXAMPLE, _EXAMPLE_COPY)
 
 
 def test_diff_level1_bytes_differ():
     from knxray._diff import _bytes_identical
+
     assert not _bytes_identical(_EXAMPLE, _EXAMPLE_RESAVED)
 
 
 # --- level 2: XML comparison (excl. ETS metadata) ---
 
+
 def test_diff_level2_xml_identical():
     from knxray._diff import _xml_identical
+
     assert _xml_identical(_EXAMPLE, _EXAMPLE_RESAVED)
 
 
 def test_diff_level2_xml_differs():
     from knxray._diff import _xml_identical
+
     assert not _xml_identical(_EXAMPLE, _EXAMPLE_GA_CHANGED)
 
 
 # --- level 4: xknxproject JSON diff ---
 
+
 def test_diff_level4_json_diff_found():
     from knxray._diff import _json_diff
+
     assert _json_diff(_EXAMPLE, _EXAMPLE_GA_CHANGED)
 
 
 def test_diff_level4_json_diff_empty():
     from knxray._diff import _json_diff
+
     assert not _json_diff(_EXAMPLE, _EXAMPLE_DEVICE_PARAM)
 
 
 # --- integration: full diff() cascade ---
+
 
 def test_diff_cascade_exits_silently():
     # Byte-identical → cascade exits at level 1, no output of any kind.
@@ -126,17 +139,43 @@ def test_diff_cascade_json_diff_snapshot(snapshot):
 
 # --- git textconv integration ---
 
+
 @pytest.fixture
 def git_repo_with_knxproj(tmp_path):
     subprocess.run(["git", "init"], cwd=tmp_path, check=True, capture_output=True)
-    subprocess.run(["git", "config", "user.email", "test@example.com"], cwd=tmp_path, check=True, capture_output=True)
-    subprocess.run(["git", "config", "user.name", "Test User"], cwd=tmp_path, check=True, capture_output=True)
-    subprocess.run(["git", "config", "commit.gpgsign", "false"], cwd=tmp_path, check=True, capture_output=True)
-    subprocess.run(["git", "config", "diff.knxray.textconv", "knxray show"], cwd=tmp_path, check=True, capture_output=True)
+    subprocess.run(
+        ["git", "config", "user.email", "test@example.com"],
+        cwd=tmp_path,
+        check=True,
+        capture_output=True,
+    )
+    subprocess.run(
+        ["git", "config", "user.name", "Test User"],
+        cwd=tmp_path,
+        check=True,
+        capture_output=True,
+    )
+    subprocess.run(
+        ["git", "config", "commit.gpgsign", "false"],
+        cwd=tmp_path,
+        check=True,
+        capture_output=True,
+    )
+    subprocess.run(
+        ["git", "config", "diff.knxray.textconv", "knxray show"],
+        cwd=tmp_path,
+        check=True,
+        capture_output=True,
+    )
     (tmp_path / ".gitattributes").write_text("*.knxproj diff=knxray\n")
     shutil.copyfile(_EXAMPLE, tmp_path / "my-installation.knxproj")
     subprocess.run(["git", "add", "."], cwd=tmp_path, check=True, capture_output=True)
-    subprocess.run(["git", "commit", "-m", "initial project"], cwd=tmp_path, check=True, capture_output=True)
+    subprocess.run(
+        ["git", "commit", "-m", "initial project"],
+        cwd=tmp_path,
+        check=True,
+        capture_output=True,
+    )
     shutil.copyfile(_EXAMPLE_GA_CHANGED, tmp_path / "my-installation.knxproj")
     yield tmp_path
 

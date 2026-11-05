@@ -1,0 +1,25 @@
+project:
+  type: nkdocs
+  render:
+    - index.qmd
+    - usage/README.md
+    - limitations/README.md
+    - related/README.md
+    - privacy.qmd
+metadata-files:
+  - _nullkomma-brand.yml
+website:
+  title: knxray
+  site-url: https://knxray.maxheld.de
+  navbar:
+    logo: logo.svg
+    left:
+      - text: Usage
+        href: usage/README.md
+      - text: Limitations
+        href: limitations/README.md
+      - text: Related tools
+        href: related/README.md
+    right:
+      - icon: github
+        href: https://github.com/dataheld/knxray
