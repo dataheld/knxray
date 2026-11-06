@@ -4,6 +4,5 @@ import pytest
 
 
 @pytest.fixture(autouse=True)
-def _isolate(monkeypatch, tmp_path):
+def _chdir_project_root(monkeypatch):
     monkeypatch.chdir(Path(__file__).parent.parent)
-    monkeypatch.setenv("GIT_CONFIG_GLOBAL", str(tmp_path / "gitconfig"))
