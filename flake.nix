@@ -38,6 +38,14 @@
       perSystem =
         { pkgs, ... }:
         {
+          process-compose.dev.settings.processes.update-readme = {
+            description = "Regenerate the README diff example after test fixtures change";
+            disabled = true;
+            command = ''
+              python -m pytest tests/test_knxray.py::test_git_diff_textconv_snapshot --snapshot-update -q \
+                && python scripts/update_readme.py
+            '';
+          };
           nullkomma.python.test.packages = [ pkgs.git ];
           nullkomma.editor.vscode.settings."files.associations"."*.ambr" = "json";
         };
