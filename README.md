@@ -1,6 +1,4 @@
-# knxray
-
-<img src="logo.svg" align="right" height="140" alt="knxray logo"/>
+# knxray <img src="logo.svg" align="right" height="140" alt="knxray logo"/>
 
 [KNX](https://www.knx.org) is a building-automation standard used to wire up lighting, heating, blinds, and similar systems.
 Installations are configured in [ETS](https://www.knx.org/knx-en/for-professionals/software/ets-6/), a proprietary Windows application that stores its project state in `*.knxproj` files — zipped XML archives.
@@ -86,11 +84,11 @@ index 255ab14..c04674e 100644
 knxray makes those files *somewhat* more transparent:
 it uses [xknxproject](https://github.com/XKNX/xknxproject) to convert the parts of a `*.knxproj` that can be extracted (group addresses, devices, communication objects) into sorted, stable JSON, which git can then diff normally.
 
-> **Important:**
+> [!IMPORTANT]
 > `xknxproject` only parses a *subset* of your `*.knxproj`, including group addresses, devices, and communication objects.
 > Device parameters (for example, a dim curve) live in opaque per-device XML and are **not** shown.
 > A clean diff here does **not** mean the `.knxproj` files are identical.
-> To highlight these "false negatives", `knxray diff` emits a warning when the normalized project XML differs but the parsed JSON does not.
+> To highlight these "false negatives", `knxray diff` emits a warning when the `*.knxproj` files differ but the parsed JSON does not.
 
 ## How diffing works
 
@@ -125,7 +123,6 @@ knxray diff <file1.knxproj> <file2.knxproj>
 Run the diff cascade on two `.knxproj` files.
 Writes a unified JSON diff to stdout; writes a warning to stderr when the files differ in ways the JSON parser cannot see.
 Equivalent files produce no output.
-All three cases exit with status 0.
 
 ### `setup`
 
@@ -135,7 +132,7 @@ knxray setup [--global]
 
 Configure the `textconv` driver for `*.knxproj` files.
 Without `--global`, writes to `.git/config` and appends `*.knxproj diff=knxray` to `.gitattributes` in the current repo.
-With `--global`, writes to `~/.gitconfig` only, so each repository still needs that `.gitattributes` line.
+With `--global`, writes to `~/.gitconfig` only.
 
 ## Quick start
 
@@ -151,16 +148,15 @@ nix run github:dataheld/knxray -- show my-installation.knxproj
 # 1. Install
 nix profile install github:dataheld/knxray
 
-# 2. Configure git (once per repo)
+# 2. Configure git (once per repo, or --global for all repos)
 knxray setup
 ```
 
 After `knxray setup`, `git diff`, `git show`, and `git log -p` show human-readable JSON diffs on committed `*.knxproj` files automatically.
 Under the hood this uses git's [`textconv` driver](https://git-scm.com/docs/gitattributes#_performing_text_diffs_of_binary_files).
 
-> **Note:**
+> [!NOTE]
 > GitHub and GitLab web UIs do not use `textconv`, so `git diff` integration only works locally.
-> Git runs `knxray show`, so it cannot emit the warning from `knxray diff`.
 
 ## Related work
 
