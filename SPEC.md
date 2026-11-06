@@ -65,13 +65,11 @@ JSON output must be reproducible across ETS saves that make no logical change:
 
 ## Development Environment
 
-[nullkomma](https://github.com/dataheld/nullkomma) supplies the build, checks, development shell, and editor settings;
-`AGENTS.md` says how to use them.
 Never install tools interactively; declare them in `flake.nix` or `pyproject.toml`.
 
 ## Documentation
 
-The site at <https://knxray.maxheld.de> renders `README.md`, so the tested diff example has a single source.
+The site renders `README.md`, so the tested diff example has a single source.
 
 ## Accepted Tradeoffs
 
@@ -91,7 +89,7 @@ The site at <https://knxray.maxheld.de> renders `README.md`, so the tested diff 
    Simpler architecture; larger but consistent diffs.
 
 1. **Nix-only distribution.**
-   `nix build .#dist` builds a wheel and sdist, but nothing is published to PyPI or conda.
+   knxray is a complete Python package, but is not published to PyPI or conda.
 
 1. **`--format` flag deferred.**
    Output format tied to level for now; separated only when a concrete second format exists.
