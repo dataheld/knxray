@@ -1,10 +1,7 @@
 import json
 import shutil
 import subprocess
-from contextlib import redirect_stdout
-from io import StringIO
 from pathlib import Path
-from unittest.mock import patch
 
 import pytest
 
@@ -36,22 +33,19 @@ _EXAMPLE_GA_CHANGED = _FIXTURES / "example-ga-removed.knxproj"
 _EXAMPLE_DEVICE_PARAM = _FIXTURES / "example-device-param-changed.knxproj"
 
 
-def _show(path):
-    from knxray._show import show
+def _knxray(*args):
+    return subprocess.run(
+        ["knxray", *map(str, args)], capture_output=True, text=True, check=True
+    )
 
-    buf = StringIO()
-    with redirect_stdout(buf):
-        show(path)
-    return buf.getvalue()
+
+def _show(path):
+    return _knxray("show", path).stdout
 
 
 def _diff(path1, path2):
-    from knxray._diff import diff
-
-    out, err = StringIO(), StringIO()
-    with redirect_stdout(out), patch("sys.stderr", err):
-        diff(path1, path2)
-    return out.getvalue(), err.getvalue()
+    result = _knxray("diff", path1, path2)
+    return result.stdout, result.stderr
 
 
 # --- show ---
@@ -114,9 +108,10 @@ def test_diff_level4_json_diff_empty():
 # --- integration: full diff() cascade ---
 
 
-def test_diff_cascade_exits_silently():
-    # Byte-identical → cascade exits at level 1, no output of any kind.
-    stdout, stderr = _diff(_EXAMPLE, _EXAMPLE_COPY)
+@pytest.mark.parametrize("other", [_EXAMPLE_COPY, _EXAMPLE_RESAVED])
+def test_diff_cascade_exits_silently(other):
+    # Byte- or XML-identical → cascade exits early, no output of any kind.
+    stdout, stderr = _diff(_EXAMPLE, other)
     assert not stdout.strip() and not stderr.strip()
 
 
@@ -140,42 +135,20 @@ def test_diff_cascade_json_diff_snapshot(snapshot):
 # --- git textconv integration ---
 
 
+def _git(cwd, *args):
+    subprocess.run(["git", *args], cwd=cwd, check=True, capture_output=True)
+
+
 @pytest.fixture
 def git_repo_with_knxproj(tmp_path):
-    subprocess.run(["git", "init"], cwd=tmp_path, check=True, capture_output=True)
-    subprocess.run(
-        ["git", "config", "user.email", "test@example.com"],
-        cwd=tmp_path,
-        check=True,
-        capture_output=True,
-    )
-    subprocess.run(
-        ["git", "config", "user.name", "Test User"],
-        cwd=tmp_path,
-        check=True,
-        capture_output=True,
-    )
-    subprocess.run(
-        ["git", "config", "commit.gpgsign", "false"],
-        cwd=tmp_path,
-        check=True,
-        capture_output=True,
-    )
-    subprocess.run(
-        ["git", "config", "diff.knxray.textconv", "knxray show"],
-        cwd=tmp_path,
-        check=True,
-        capture_output=True,
-    )
-    (tmp_path / ".gitattributes").write_text("*.knxproj diff=knxray\n")
+    _git(tmp_path, "init")
+    _git(tmp_path, "config", "user.email", "test@example.com")
+    _git(tmp_path, "config", "user.name", "Test User")
+    _git(tmp_path, "config", "commit.gpgsign", "false")
+    subprocess.run(["knxray", "setup"], cwd=tmp_path, check=True, capture_output=True)
     shutil.copyfile(_EXAMPLE, tmp_path / "my-installation.knxproj")
-    subprocess.run(["git", "add", "."], cwd=tmp_path, check=True, capture_output=True)
-    subprocess.run(
-        ["git", "commit", "-m", "initial project"],
-        cwd=tmp_path,
-        check=True,
-        capture_output=True,
-    )
+    _git(tmp_path, "add", ".")
+    _git(tmp_path, "commit", "-m", "initial project")
     shutil.copyfile(_EXAMPLE_GA_CHANGED, tmp_path / "my-installation.knxproj")
     yield tmp_path
 
@@ -197,3 +170,46 @@ def test_git_diff_textconv_snapshot(snapshot, git_repo_with_knxproj):
 def test_readme_shows_current_git_diff(git_repo_with_knxproj):
     readme = Path("README.md").read_text(encoding="utf-8")
     assert _git_diff(git_repo_with_knxproj) in readme
+
+
+# --- cli ---
+
+
+def test_no_command_prints_help_and_fails():
+    result = subprocess.run(["knxray"], capture_output=True, text=True)
+    assert result.returncode == 1
+    assert "usage: knxray" in result.stdout
+
+
+# --- setup ---
+
+_DRIVER = {"diff.knxray.textconv": "knxray show", "diff.knxray.cachetextconv": "true"}
+
+
+def _driver_config(scope):
+    return {
+        key: subprocess.check_output(["git", "config", scope, key], text=True).strip()
+        for key in _DRIVER
+    }
+
+
+@pytest.fixture
+def git_repo(tmp_path, monkeypatch):
+    _git(tmp_path, "init")
+    monkeypatch.chdir(tmp_path)
+    return tmp_path
+
+
+def test_setup_appends_the_attribute_once(git_repo):
+    attributes = git_repo / ".gitattributes"
+    attributes.write_text("*.txt text\n")
+    for _ in range(2):
+        _knxray("setup")
+    assert attributes.read_text() == "*.txt text\n*.knxproj diff=knxray\n"
+    assert _driver_config("--local") == _DRIVER
+
+
+def test_setup_global_leaves_the_repository_alone(git_repo):
+    _knxray("setup", "--global")
+    assert not (git_repo / ".gitattributes").exists()
+    assert _driver_config("--global") == _DRIVER
