@@ -82,17 +82,17 @@
         "uv2nix": "uv2nix"
       },
       "locked": {
-        "lastModified": 1794000136,
-        "narHash": "sha256-NzGV1lOVe2qaZQTt0u1c087rKOeLvrLg5J17JgUOaVQ=",
+        "lastModified": 1794003903,
+        "narHash": "sha256-8MP01dXSn8fiAGmYFUWpsHmPqe1DbG4T6YXEHkwtjGo=",
         "owner": "dataheld",
         "repo": "nullkomma",
-        "rev": "eacba26c125e792ff2e2a72339f5da6c55d21fcb",
+        "rev": "bf82a0a74479970a148da6b482f7a58201b97331",
         "type": "github"
       },
       "original": {
         "owner": "dataheld",
         "repo": "nullkomma",
-        "rev": "eacba26c125e792ff2e2a72339f5da6c55d21fcb",
+        "rev": "bf82a0a74479970a148da6b482f7a58201b97331",
         "type": "github"
       }
     },
