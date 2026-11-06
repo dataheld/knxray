@@ -67,9 +67,13 @@ JSON output must be reproducible across ETS saves that make no logical change:
 
 Never install tools interactively; declare them in `flake.nix` or `pyproject.toml`.
 
+The brand comes from a private flake, so `nix develop`, `nix fmt` and `nix flake check` need FlakeHub access.
+`nix run`, `nix profile install` and `uv run pytest` do not.
+
 ## Documentation
 
 The site renders `README.md`, so the tested diff example has a single source.
+A Mermaid block shows as source text there, so `README.md` has none.
 
 ## Accepted Tradeoffs
 
