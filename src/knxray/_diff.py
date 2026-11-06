@@ -26,9 +26,7 @@ def _xml_identical(path1: Path, path2: Path) -> bool:
             return False
         for n in names1:
             b1, b2 = z1.read(n), z2.read(n)
-            equal = (
-                (normalize(b1) == normalize(b2)) if n.endswith(".xml") else (b1 == b2)
-            )
+            equal = normalize(b1) == normalize(b2) if n.endswith(".xml") else b1 == b2
             if not equal:
                 return False
         return True
