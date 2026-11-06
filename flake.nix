@@ -2,7 +2,7 @@
   description = "Diffable plain-text JSON from *.knxproj files via xknxproject";
 
   inputs = {
-    nullkomma.url = "github:dataheld/nullkomma/c5379539f702e6d271f5291bca6a627f4fa557d3";
+    nullkomma.url = "github:dataheld/nullkomma/137ec43b5d7ad9d30ca97b889fa7e8a2334d6ba5";
     nixpkgs.follows = "nullkomma/nixpkgs";
   };
 
