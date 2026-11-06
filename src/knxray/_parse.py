@@ -10,9 +10,9 @@ _NOTICE = (
 
 
 def parse(path: Path) -> dict:
-    project: dict = dict(XKNXProj(path=str(path), language="en-US").parse())
+    project = XKNXProj(path=str(path), language="en-US").parse()
     # last_modified changes on every ETS save regardless of user intent — omit to keep diffs clean
-    project.get("info", {}).pop("last_modified", None)
+    project.get("info", {}).pop("last_modified", None)  # ty: ignore[invalid-argument-type]
     return {"_notice": _NOTICE, **project}
 
 
