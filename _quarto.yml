@@ -3,6 +3,8 @@ project:
   render:
     - index.qmd
     - privacy.qmd
+filters:
+  - mermaid.lua
 metadata-files:
   - _nullkomma-brand.yml
 website:

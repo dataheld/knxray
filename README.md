@@ -96,6 +96,27 @@ A `.knxproj` file is a zip archive containing XML.
 Comparing two of them is not as simple as a byte-for-byte check — ETS rewrites internal metadata files (`.validation`, `.certificate`) on every save, even when the project hasn't changed.
 knxray therefore applies a cascade of checks, stopping as soon as the two files are considered equivalent at that level:
 
+```mermaid
+flowchart TD
+    A(["knxray diff A B"]) --> byte
+
+    byte{"1 · byte-identical?"}
+    byte -->|yes| done_byte(["no output"])
+    byte -->|no| xml
+
+    xml{"2 · XML-identical?<br/>excl. non-deterministic<br/>ETS metadata"}
+    xml -->|yes| done_xml(["no output"])
+    xml -->|no| xmlsem
+
+    xmlsem{"3 · XML semantically<br/>identical?<br/>— planned —"}
+    xmlsem -->|yes| done_xmlsem(["no output"])
+    xmlsem -->|no| json
+
+    json{"4 · parsed JSON<br/>identical?<br/>xknxproject"}
+    json -->|yes| warn(["⚠ warn to stderr:<br/>XML differs but<br/>parser is blind to it"])
+    json -->|no| out(["print JSON diff<br/>to stdout"])
+```
+
 | Level                        | What it catches                         | What it misses                         |
 | ---------------------------- | --------------------------------------- | -------------------------------------- |
 | 1 · byte                     | anything                                | —                                      |
@@ -122,7 +143,6 @@ knxray diff <file1.knxproj> <file2.knxproj>
 
 Run the diff cascade on two `.knxproj` files.
 Writes a unified JSON diff to stdout; writes a warning to stderr when the files differ in ways the JSON parser cannot see.
-Equivalent files produce no output.
 
 ### `setup`
 

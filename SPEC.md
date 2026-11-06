@@ -72,8 +72,9 @@ The brand comes from a private flake, so `nix develop`, `nix fmt` and `nix flake
 
 ## Documentation
 
-The site renders `README.md`, so the tested diff example has a single source.
-A Mermaid block or a GitHub alert shows as source text there, so `README.md` has neither.
+The site renders `README.md`, so the tested diff example and the flowchart have a single source.
+`mermaid.lua` draws GitHub's Mermaid fence on the site, because Quarto draws only its own `{mermaid}` cells.
+A GitHub alert shows as source text there, so `README.md` has none.
 
 ## Accepted Tradeoffs
 
