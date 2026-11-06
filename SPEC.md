@@ -67,8 +67,8 @@ JSON output must be reproducible across ETS saves that make no logical change:
 
 Never install tools interactively; declare them in `flake.nix` or `pyproject.toml`.
 
-The brand comes from a private flake, so `nix develop`, `nix fmt` and `nix flake check` need FlakeHub access.
-`nix run`, `nix profile install` and `uv run pytest` do not.
+The brand comes from a private flake, so `nix develop`, `nix fmt`, `nix flake check` and `.#site` need access to it on FlakeHub.
+`nix run`, `nix profile install` and `.#dist` need no FlakeHub login, and `uv run pytest` does not use FlakeHub.
 
 ## Documentation
 
