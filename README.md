@@ -90,7 +90,7 @@ it uses [xknxproject](https://github.com/XKNX/xknxproject) to convert the parts 
 > `xknxproject` only parses a *subset* of your `*.knxproj`, including group addresses, devices, and communication objects.
 > Device parameters (for example, a dim curve) live in opaque per-device XML and are **not** shown.
 > A clean diff here does **not** mean the `.knxproj` files are identical.
-> To highlight these "false negatives", `knxray diff` emits a warning when the `*.knxproj` files differ but the parsed JSON does not.
+> To highlight these "false negatives", `knxray diff` emits a warning when the normalized project XML differs but the parsed JSON does not.
 
 ## How diffing works
 
@@ -124,6 +124,8 @@ knxray diff <file1.knxproj> <file2.knxproj>
 
 Run the diff cascade on two `.knxproj` files.
 Writes a unified JSON diff to stdout; writes a warning to stderr when the files differ in ways the JSON parser cannot see.
+Equivalent files produce no output.
+All three cases exit with status 0.
 
 ### `setup`
 
@@ -133,7 +135,7 @@ knxray setup [--global]
 
 Configure the `textconv` driver for `*.knxproj` files.
 Without `--global`, writes to `.git/config` and appends `*.knxproj diff=knxray` to `.gitattributes` in the current repo.
-With `--global`, writes to `~/.gitconfig` only.
+With `--global`, writes to `~/.gitconfig` only, so each repository still needs that `.gitattributes` line.
 
 ## Quick start
 
@@ -149,7 +151,7 @@ nix run github:dataheld/knxray -- show my-installation.knxproj
 # 1. Install
 nix profile install github:dataheld/knxray
 
-# 2. Configure git (once per repo, or --global for all repos)
+# 2. Configure git (once per repo)
 knxray setup
 ```
 
