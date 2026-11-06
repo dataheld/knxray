@@ -73,7 +73,7 @@ The brand comes from a private flake, so `nix develop`, `nix fmt` and `nix flake
 ## Documentation
 
 The site renders `README.md`, so the tested diff example has a single source.
-A Mermaid block shows as source text there, so `README.md` has none.
+A Mermaid block or a GitHub alert shows as source text there, so `README.md` has neither.
 
 ## Accepted Tradeoffs
 

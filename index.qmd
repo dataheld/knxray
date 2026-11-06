@@ -1,5 +1,1 @@
----
-from: gfm
----
-
 {{< include README.md >}}
