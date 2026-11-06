@@ -7,10 +7,9 @@ metadata-files:
   - _nullkomma-brand.yml
 website:
   title: knxray
-  site-url: https://knxray.maxheld.de
-  repo-url: https://github.com/dataheld/knxray
   navbar:
     logo: logo.svg
     right:
       - icon: github
         href: https://github.com/dataheld/knxray
+        aria-label: Source code on GitHub
