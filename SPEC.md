@@ -65,15 +65,11 @@ JSON output must be reproducible across ETS saves that make no logical change:
 
 ## Development Environment
 
-Never install tools interactively; declare them in `flake.nix` or `pyproject.toml`.
-
-The brand comes from a private flake, so `nix develop`, `nix fmt`, `nix flake check` and `.#site` need access to it on FlakeHub.
-`nix run`, `nix profile install` and `.#dist` need no FlakeHub login, and `uv run pytest` does not use FlakeHub.
+The development environment comes from [nullkomma](https://github.com/dataheld/nullkomma); see its section in `AGENTS.md`.
 
 ## Documentation
 
 The site renders `README.md`, so the tested diff example and the flowchart have a single source.
-`mermaid.lua` draws GitHub's Mermaid fence on the site, because Quarto draws only its own `{mermaid}` cells.
 A GitHub alert shows as source text there, so `README.md` has none.
 
 ## Accepted Tradeoffs
