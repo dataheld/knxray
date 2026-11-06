@@ -9,13 +9,6 @@
   outputs =
     inputs:
     inputs.nullkomma.lib.mkFlake { inherit inputs; } {
-      systems = [
-        "x86_64-linux"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "aarch64-darwin"
-      ];
-
       nullkomma = {
         gitignore = [ ".claude/" ];
         lint.markdown = {
