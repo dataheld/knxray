@@ -16,11 +16,8 @@ function CodeBlock(block)
       path("mermaid.min.js"),
       { path = path("mermaid-init.js"), afterBody = true },
     },
-    stylesheets = { path("mermaid.css") },
   })
-  local text = block.text:gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;")
+  block.classes:insert("mermaid-js")
   -- mermaid-init.js moves the diagram to the end of the parent element.
-  return pandoc.Div(
-    pandoc.RawBlock("html", '<pre class="mermaid mermaid-js">' .. text .. "</pre>")
-  )
+  return pandoc.Div(block)
 end
