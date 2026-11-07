@@ -10,7 +10,6 @@
     inputs:
     inputs.nullkomma.lib.mkFlake { inherit inputs; } {
       nullkomma = {
-        gitignore = [ ".claude/" ];
         lint.markdown = {
           MD013 = false;
           MD033.allowed-elements = [ "img" ];

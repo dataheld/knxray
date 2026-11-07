@@ -1,3 +1,4 @@
+.claude/
 /.quarto/
 **/*.quarto_ipynb
 
@@ -19,7 +20,6 @@ result-*
 /.nullkomma/cloudflare/
 /.nullkomma/gcroots/
 .playwright-mcp/
-.claude/
 /.mcp.json
 /.nvim.lua
 /.vscode/extensions.json
