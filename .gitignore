@@ -1,5 +1,30 @@
 .claude/
+/.quarto/
+**/*.quarto_ipynb
+
+# nullkomma:git:start
+.quarto/
+_site/
+.luarc.json
+.venv
+.pytest_cache
+.ruff_cache
+.coverage
+coverage.xml
+htmlcov
+__pycache__
+*.egg-info
+result
+result-*
 .direnv/
-__pycache__/
-*.pyc
-*.pyo
+/.nullkomma/cloudflare/
+/.nullkomma/gcroots/
+.playwright-mcp/
+/.mcp.json
+/.nvim.lua
+/.vscode/extensions.json
+/.vscode/mcp.json
+/.vscode/settings.json
+/_nullkomma-brand.yml
+/privacy.qmd
+# nullkomma:git:end

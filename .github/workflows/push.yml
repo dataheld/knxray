@@ -1,31 +1,38 @@
 name: CI
 on:
   pull_request:
-  workflow_dispatch:
   push:
+  workflow_dispatch:
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' || github.ref != 'refs/heads/main' }}
 jobs:
-  DeterminateCI:
-    uses: DeterminateSystems/ci/.github/workflows/workflow.yml@main
+  nullkomma:
+    uses: dataheld/nullkomma/.github/workflows/ci.yml@main
     permissions:
-      id-token: "write"
-      contents: "read"
-    with:
-      visibility: public
-      fail-fast: false
-      runner-map: |
-        {
-          "aarch64-darwin": "macos-latest",
-          "aarch64-linux": "ubuntu-24.04-arm",
-          "x86_64-linux": "ubuntu-latest"
-        }
-  flake-checker:
+      contents: read
+      id-token: write
+  deploy:
+    needs: nullkomma
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && !github.event.repository.fork }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    concurrency:
+      group: cloudflare-production
+      cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v6
-      - name: Check Nix flake Nixpkgs inputs
-        uses: DeterminateSystems/flake-checker-action@v12
+      - uses: actions/checkout@v7
         with:
-          fail-mode: true
+          persist-credentials: false
+      - uses: DeterminateSystems/determinate-nix-action@v3
+      - uses: DeterminateSystems/flakehub-cache-action@v3
+      - name: Deploy site and subdomain
+        run: nix run .#deploy
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_STATE_BUCKET: ${{ vars.CLOUDFLARE_STATE_BUCKET }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_R2_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_R2_ACCESS_KEY_ID }}
+          CLOUDFLARE_R2_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_R2_SECRET_ACCESS_KEY }}

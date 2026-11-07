@@ -11,6 +11,7 @@ _WARN_BLIND = (
     "There may be differences such as device parameters that are not shown above."
 )
 
+
 def _bytes_identical(path1: Path, path2: Path) -> bool:
     """Level 1: full byte comparison (fastest exit)."""
     return path1.read_bytes() == path2.read_bytes()
@@ -25,7 +26,7 @@ def _xml_identical(path1: Path, path2: Path) -> bool:
             return False
         for n in names1:
             b1, b2 = z1.read(n), z2.read(n)
-            equal = (normalize(b1) == normalize(b2)) if n.endswith(".xml") else (b1 == b2)
+            equal = normalize(b1) == normalize(b2) if n.endswith(".xml") else b1 == b2
             if not equal:
                 return False
         return True
@@ -51,12 +52,12 @@ def _json_diff(path1: Path, path2: Path) -> list[str]:
 
 
 def diff(path1: Path, path2: Path, level: str = "json") -> None:  # noqa: ARG001 (level unused until more levels exist)
-    if _bytes_identical(path1, path2):      # level 1
+    if _bytes_identical(path1, path2):  # level 1
         return
-    if _xml_identical(path1, path2):        # level 2
+    if _xml_identical(path1, path2):  # level 2
         return
     # level 3 (planned): XML-semantic diff would go here
-    lines = _json_diff(path1, path2)        # level 4
+    lines = _json_diff(path1, path2)  # level 4
     if lines:
         sys.stdout.writelines(lines)
     else:

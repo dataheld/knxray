@@ -31,12 +31,12 @@ a semantic parser extracts meaningful content; surrounding zip metadata is silen
 
 ### Level Rationale
 
-| # | Why it exists |
-| --- | --- |
-| 1 · Byte | Fastest exit: identical bytes means nothing to show. |
-| 2 · XML-byte | Catches real changes while ignoring ETS metadata churn. |
+| #                            | Why it exists                                                             |
+| ---------------------------- | ------------------------------------------------------------------------- |
+| 1 · Byte                     | Fastest exit: identical bytes means nothing to show.                      |
+| 2 · XML-byte                 | Catches real changes while ignoring ETS metadata churn.                   |
 | 3 · XML-semantic *(planned)* | Catches device parameters and other XML changes invisible to xknxproject. |
-| 4 · JSON (xknxproject) | Human-readable structured diff of what xknxproject can parse. |
+| 4 · JSON (xknxproject)       | Human-readable structured diff of what xknxproject can parse.             |
 
 Level 3 is the critical missing piece.
 Until it exists, any XML-level difference invisible to xknxproject is surfaced only as a stderr warning at level 4.
@@ -65,29 +65,34 @@ JSON output must be reproducible across ETS saves that make no logical change:
 
 ## Development Environment
 
-- Always enter the Nix dev shell with `nix develop .` before working.
-- Never install tools interactively; add them to `flake.nix` first, then run `nix flake update`.
-- After any non-trivial change, validate that all flake targets still build.
+The development environment comes from [nullkomma](https://github.com/dataheld/nullkomma); see its section in `AGENTS.md`.
+
+## Documentation
+
+The site renders `README.md`, so the tested diff example and the flowchart have a single source.
+A GitHub alert shows as source text there, so `README.md` has none.
+The site's brand is a private FlakeHub flake, so `nk`, `nix develop`, `nix fmt`, `nix flake check` and `.#site` need a FlakeHub login.
+The default package and `.#dist` do not.
 
 ## Accepted Tradeoffs
 
 1. **Partial visibility is permanent** (unless xknxproject upstream gains device parameter support).
    Mitigated with the `_notice` field and level-4 warning.
 
-2. **No web UI diffs.**
+1. **No web UI diffs.**
    GitHub/GitLab bypass `textconv`; only local `git` commands benefit.
    GHA integration is a long-term goal but not yet planned.
 
-3. **`--level` flag deferred.**
+1. **`--level` flag deferred.**
    No flag until 2+ levels exist.
    Registry pattern keeps the addition isolated.
 
-4. **Monolithic JSON output.**
+1. **Monolithic JSON output.**
    One combined object, not split by section.
    Simpler architecture; larger but consistent diffs.
 
-5. **Nix-only distribution.**
-   No pip/conda packaging.
+1. **Nix-only distribution.**
+   knxray is a complete Python package, but is not published to PyPI or conda.
 
-6. **`--format` flag deferred.**
+1. **`--format` flag deferred.**
    Output format tied to level for now; separated only when a concrete second format exists.

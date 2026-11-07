@@ -1,4 +1,6 @@
-# knxray <img src="logo.svg" align="right" height="140" alt="knxray logo"/>
+# knxray
+
+<img src="logo.svg" align="right" height="140" alt="knxray logo"/>
 
 [KNX](https://www.knx.org) is a building-automation standard used to wire up lighting, heating, blinds, and similar systems.
 Installations are configured in [ETS](https://www.knx.org/knx-en/for-professionals/software/ets-6/), a proprietary Windows application that stores its project state in `*.knxproj` files — zipped XML archives.
@@ -14,6 +16,7 @@ Binary files a/my-installation.knxproj and b/my-installation.knxproj differ
 With knxray installed and configured, the same command shows:
 
 <!-- BEGIN git-diff-example -->
+
 ```diff
 diff --git a/my-installation.knxproj b/my-installation.knxproj
 index 255ab14..c04674e 100644
@@ -77,12 +80,13 @@ index 255ab14..c04674e 100644
        "data_secure": false,
        "description": "",
 ```
+
 <!-- END git-diff-example -->
 
 knxray makes those files *somewhat* more transparent:
 it uses [xknxproject](https://github.com/XKNX/xknxproject) to convert the parts of a `*.knxproj` that can be extracted (group addresses, devices, communication objects) into sorted, stable JSON, which git can then diff normally.
 
-> [!IMPORTANT]
+> **Important:**
 > `xknxproject` only parses a *subset* of your `*.knxproj`, including group addresses, devices, and communication objects.
 > Device parameters (for example, a dim curve) live in opaque per-device XML and are **not** shown.
 > A clean diff here does **not** mean the `.knxproj` files are identical.
@@ -102,25 +106,25 @@ flowchart TD
     byte -->|yes| done_byte(["no output"])
     byte -->|no| xml
 
-    xml{"2 · XML-identical?\nexcl. non-deterministic\nETS metadata"}
+    xml{"2 · XML-identical?<br/>excl. non-deterministic<br/>ETS metadata"}
     xml -->|yes| done_xml(["no output"])
     xml -->|no| xmlsem
 
-    xmlsem{"3 · XML semantically\nidentical?\n— planned —"}
+    xmlsem{"3 · XML semantically<br/>identical?<br/>— planned —"}
     xmlsem -->|yes| done_xmlsem(["no output"])
     xmlsem -->|no| json
 
-    json{"4 · parsed JSON\nidentical?\nxknxproject"}
-    json -->|yes| warn(["⚠ warn to stderr:\nXML differs but\nparser is blind to it"])
-    json -->|no| out(["print JSON diff\nto stdout"])
+    json{"4 · parsed JSON<br/>identical?<br/>xknxproject"}
+    json -->|yes| warn(["⚠ warn to stderr:<br/>XML differs but<br/>parser is blind to it"])
+    json -->|no| out(["print JSON diff<br/>to stdout"])
 ```
 
-| Level | What it catches | What it misses |
-| --- | --- | --- |
-| 1 · byte | anything | — |
-| 2 · XML-byte | real project changes | XML whitespace / attribute-order noise |
-| 3 · XML semantic *(planned)* | all XML-level changes | — |
-| 4 · JSON (xknxproject) | group addresses, devices, comm. objects | device parameters, some ETS settings |
+| Level                        | What it catches                         | What it misses                         |
+| ---------------------------- | --------------------------------------- | -------------------------------------- |
+| 1 · byte                     | anything                                | —                                      |
+| 2 · XML-byte                 | real project changes                    | XML whitespace / attribute-order noise |
+| 3 · XML semantic *(planned)* | all XML-level changes                   | —                                      |
+| 4 · JSON (xknxproject)       | group addresses, devices, comm. objects | device parameters, some ETS settings   |
 
 ## Commands
 
@@ -173,7 +177,7 @@ knxray setup
 After `knxray setup`, `git diff`, `git show`, and `git log -p` show human-readable JSON diffs on committed `*.knxproj` files automatically.
 Under the hood this uses git's [`textconv` driver](https://git-scm.com/docs/gitattributes#_performing_text_diffs_of_binary_files).
 
-> [!NOTE]
+> **Note:**
 > GitHub and GitLab web UIs do not use `textconv`, so `git diff` integration only works locally.
 
 ## Related work

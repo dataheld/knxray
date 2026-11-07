@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Inject the git-diff textconv snapshot into README.md."""
+
 import re
 import sys
 from pathlib import Path
@@ -23,20 +24,13 @@ def _extract_snapshot(name: str) -> str:
     raw = match.group(1)
     # syrupy indents every content line with 2 spaces
     return "\n".join(
-        line[2:] if line.startswith("  ") else line
-        for line in raw.split("\n")
+        line[2:] if line.startswith("  ") else line for line in raw.split("\n")
     ).strip("\n")
 
 
 def main() -> None:
     snapshot = _extract_snapshot(_SNAPSHOT_NAME)
-    block = (
-        f"{_BEGIN}\n"
-        f"```diff\n"
-        f"{snapshot}\n"
-        f"```\n"
-        f"{_END}"
-    )
+    block = f"{_BEGIN}\n\n```diff\n{snapshot}\n```\n\n{_END}"
     readme = _README.read_text(encoding="utf-8")
     updated = re.sub(
         rf"{re.escape(_BEGIN)}.*?{re.escape(_END)}",

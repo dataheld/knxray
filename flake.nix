@@ -2,108 +2,57 @@
   description = "Diffable plain-text JSON from *.knxproj files via xknxproject";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
-    pyproject-nix = {
-      url = "github:pyproject-nix/pyproject.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    uv2nix = {
-      url = "github:pyproject-nix/uv2nix";
-      inputs.pyproject-nix.follows = "pyproject-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    pyproject-build-systems = {
-      url = "github:pyproject-nix/build-system-pkgs";
-      inputs.pyproject-nix.follows = "pyproject-nix";
-      inputs.uv2nix.follows = "uv2nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    flake-schemas.url = "github:DeterminateSystems/flake-schemas";
+    nullkomma.url = "https://flakehub.com/f/dataheld/nullkomma/0.1.*";
+    nixpkgs.follows = "nullkomma/nixpkgs";
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      pyproject-nix,
-      uv2nix,
-      pyproject-build-systems,
-      flake-schemas,
-      ...
-    }:
-    let
-      inherit (nixpkgs) lib;
-      forAllSystems = lib.genAttrs [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
-
-      workspace = uv2nix.lib.workspace.loadWorkspace { workspaceRoot = ./.; };
-      overlay = workspace.mkPyprojectOverlay { sourcePreference = "wheel"; };
-      editableOverlay = workspace.mkEditablePyprojectOverlay { root = "$REPO_ROOT"; };
-
-      pythonSets = forAllSystems (
-        system:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-          python = pkgs.python3;
-        in
-        (pkgs.callPackage pyproject-nix.build.packages { inherit python; }).overrideScope (
-          lib.composeManyExtensions [
-            pyproject-build-systems.overlays.wheel
-            overlay
-          ]
-        )
-      );
-    in
-    {
-      schemas = flake-schemas.schemas;
-
-      packages = forAllSystems (system: {
-        default = pythonSets.${system}.mkVirtualEnv "knxray-env" workspace.deps.default;
-      });
-
-      apps = forAllSystems (system: rec {
-        knxray = {
-          type = "app";
-          program = "${self.packages.${system}.default}/bin/knxray";
+    inputs:
+    inputs.nullkomma.lib.mkFlake { inherit inputs; } {
+      nullkomma = {
+        lint.markdown = {
+          MD013 = false;
+          MD033.allowed-elements = [ "img" ];
         };
-        default = knxray;
-      });
+        python.enable = true;
+        quarto = {
+          enable = true;
+          brand.enable = true;
+        };
+        cloudflare = {
+          enable = true;
+          domain = "maxheld.de";
+        };
+      };
 
-      devShells = forAllSystems (
-        system:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-          pythonSet = pythonSets.${system}.overrideScope editableOverlay;
-          virtualenv = pythonSet.mkVirtualEnv "knxray-dev-env" workspace.deps.all;
-        in
-        {
-          default = pkgs.mkShell {
-            packages = [ virtualenv uv2nix.packages.${system}.uv-bin ];
-            env = {
-              UV_NO_SYNC = "1";
-              UV_PYTHON = pythonSet.python.interpreter;
-              UV_PYTHON_DOWNLOADS = "never";
-            };
-            shellHook = ''
-              unset PYTHONPATH
-              export REPO_ROOT=$(git rev-parse --show-toplevel)
-            '';
+      partitions.dev = {
+        extraInputsFlake = ./dev;
+        module =
+          { inputs, ... }:
+          {
+            nullkomma.brand = inputs.brand;
           };
-        }
-      );
+      };
 
-      checks = forAllSystems (
-        system:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-          testVenv = pythonSets.${system}.mkVirtualEnv "knxray-test-env" workspace.deps.all;
-        in
+      perSystem =
+        { config, pkgs, ... }:
         {
-          pytest = pkgs.runCommand "knxray-pytest" { nativeBuildInputs = [ testVenv pkgs.git ]; } ''
-            export HOME=$(mktemp -d)
-            pytest ${self}/tests -v --tb=short -p no:cacheprovider
-            touch $out
-          '';
-        }
-      );
+          process-compose.dev.settings.processes.update-readme = {
+            description = "Regenerate the README diff example after test fixtures change";
+            disabled = true;
+            command = pkgs.writeShellApplication {
+              name = "update-readme";
+              runtimeInputs = [ config.nullkomma.python.interpreter ];
+              # Without PC_NO_WATCH, a scratch copy would receive the snapshot.
+              text = ''
+                PC_NO_WATCH=1 ${config.process-compose.dev.settings.processes.python-test.command} \
+                  tests/test_knxray.py::test_git_diff_textconv_snapshot --snapshot-update -q
+                python scripts/update_readme.py
+              '';
+            };
+          };
+          nullkomma.python.test.packages = [ pkgs.git ];
+          nullkomma.editor.vscode.settings."files.associations"."*.ambr" = "json";
+        };
     };
 }

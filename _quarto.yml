@@ -1,0 +1,18 @@
+project:
+  type: nkdocs
+  render:
+    - index.qmd
+    - privacy.qmd
+repo-actions: false
+filters:
+  - mermaid.lua
+metadata-files:
+  - _nullkomma-brand.yml
+website:
+  title: knxray
+  navbar:
+    logo: logo.svg
+    right:
+      - icon: github
+        href: https://github.com/dataheld/knxray
+        aria-label: Source code on GitHub
