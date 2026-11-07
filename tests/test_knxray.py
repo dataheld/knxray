@@ -1,3 +1,4 @@
+import sys
 import json
 import shutil
 import subprocess
@@ -197,3 +198,41 @@ def test_git_diff_textconv_snapshot(snapshot, git_repo_with_knxproj):
 def test_readme_shows_current_git_diff(git_repo_with_knxproj):
     readme = Path("README.md").read_text(encoding="utf-8")
     assert _git_diff(git_repo_with_knxproj) in readme
+
+# --- cli error handling ---
+
+
+def test_cli_show_missing_file():
+    res = subprocess.run(
+        [sys.executable, "-m", "knxray._cli", "show", "nope.knxproj"],
+        capture_output=True,
+        text=True,
+    )
+    assert res.returncode == 1
+    assert "nope.knxproj: No such file or directory" in res.stderr
+    assert "Traceback" not in res.stderr
+
+
+def test_cli_diff_missing_file():
+    res = subprocess.run(
+        [sys.executable, "-m", "knxray._cli", "diff", "nope.knxproj", str(_EXAMPLE)],
+        capture_output=True,
+        text=True,
+    )
+    assert res.returncode == 1
+    assert "nope.knxproj: No such file or directory" in res.stderr
+    assert "Traceback" not in res.stderr
+
+
+def test_cli_show_invalid_archive(tmp_path):
+    bad = tmp_path / "bad.knxproj"
+    bad.write_text("not a zip")
+    res = subprocess.run(
+        [sys.executable, "-m", "knxray._cli", "show", str(bad)],
+        capture_output=True,
+        text=True,
+    )
+    assert res.returncode == 1
+    assert "File is not a zip file" in res.stderr
+    assert "Traceback" not in res.stderr
+
