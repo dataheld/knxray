@@ -82,18 +82,16 @@
         "uv2nix": "uv2nix"
       },
       "locked": {
-        "lastModified": 1794003903,
+        "lastModified": 1794011448,
         "narHash": "sha256-8MP01dXSn8fiAGmYFUWpsHmPqe1DbG4T6YXEHkwtjGo=",
-        "owner": "dataheld",
-        "repo": "nullkomma",
-        "rev": "bf82a0a74479970a148da6b482f7a58201b97331",
-        "type": "github"
+        "rev": "49c3ef963547601bf26e4246fb9fc0107aa6cab7",
+        "revCount": 769,
+        "type": "tarball",
+        "url": "https://api.flakehub.com/f/pinned/dataheld/nullkomma/0.1.769%2Brev-49c3ef963547601bf26e4246fb9fc0107aa6cab7/01a1b370-93f2-7f51-8aa7-fc52493c1df7/source.tar.gz"
       },
       "original": {
-        "owner": "dataheld",
-        "repo": "nullkomma",
-        "rev": "bf82a0a74479970a148da6b482f7a58201b97331",
-        "type": "github"
+        "type": "tarball",
+        "url": "https://flakehub.com/f/dataheld/nullkomma/0.1.%2A"
       }
     },
     "process-compose-flake": {

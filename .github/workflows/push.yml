@@ -8,7 +8,7 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' || github.ref != 'refs/heads/main' }}
 jobs:
   nullkomma:
-    uses: dataheld/nullkomma/.github/workflows/ci.yml@bf82a0a74479970a148da6b482f7a58201b97331
+    uses: dataheld/nullkomma/.github/workflows/ci.yml@main
     permissions:
       contents: read
       id-token: write
