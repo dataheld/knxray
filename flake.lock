@@ -82,12 +82,12 @@
         "uv2nix": "uv2nix"
       },
       "locked": {
-        "lastModified": 1794011448,
-        "narHash": "sha256-8MP01dXSn8fiAGmYFUWpsHmPqe1DbG4T6YXEHkwtjGo=",
-        "rev": "49c3ef963547601bf26e4246fb9fc0107aa6cab7",
-        "revCount": 769,
+        "lastModified": 1794061849,
+        "narHash": "sha256-0WxghwFYlwa6KboRLvLlxSvdTvqQ2mzKTZRV6kfILzI=",
+        "rev": "c049cb6bac3b764128c8d0add5d1221a163b08db",
+        "revCount": 774,
         "type": "tarball",
-        "url": "https://api.flakehub.com/f/pinned/dataheld/nullkomma/0.1.769%2Brev-49c3ef963547601bf26e4246fb9fc0107aa6cab7/01a1b370-93f2-7f51-8aa7-fc52493c1df7/source.tar.gz"
+        "url": "https://api.flakehub.com/f/pinned/dataheld/nullkomma/0.1.774%2Brev-c049cb6bac3b764128c8d0add5d1221a163b08db/01a1b673-7b55-7892-a5f0-cb4f90dc5f6e/source.tar.gz"
       },
       "original": {
         "type": "tarball",
