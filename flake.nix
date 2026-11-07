@@ -36,15 +36,21 @@
       };
 
       perSystem =
-        { pkgs, ... }:
+        { config, pkgs, ... }:
         {
           process-compose.dev.settings.processes.update-readme = {
             description = "Regenerate the README diff example after test fixtures change";
             disabled = true;
-            command = ''
-              python -m pytest tests/test_knxray.py::test_git_diff_textconv_snapshot --snapshot-update -q \
-                && python scripts/update_readme.py
-            '';
+            command = pkgs.writeShellApplication {
+              name = "update-readme";
+              runtimeInputs = [ config.nullkomma.python.interpreter ];
+              # Without PC_NO_WATCH, a scratch copy would receive the snapshot.
+              text = ''
+                PC_NO_WATCH=1 ${config.process-compose.dev.settings.processes.python-test.command} \
+                  tests/test_knxray.py::test_git_diff_textconv_snapshot --snapshot-update -q
+                python scripts/update_readme.py
+              '';
+            };
           };
           nullkomma.python.test.packages = [ pkgs.git ];
           nullkomma.editor.vscode.settings."files.associations"."*.ambr" = "json";
