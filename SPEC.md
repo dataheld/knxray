@@ -71,8 +71,8 @@ The development environment comes from [nullkomma](https://github.com/dataheld/n
 
 The site renders `README.md`, so the tested diff example and the flowchart have a single source.
 A GitHub alert shows as source text there, so `README.md` has none.
-The site's brand is a private FlakeHub flake, so `nix develop`, `nix fmt`, `nix flake check` and `.#site` need FlakeHub access.
-`nix run`, `nix profile install` and `.#dist` do not.
+The site's brand is a private FlakeHub flake, so `nk`, `nix develop`, `nix fmt`, `nix flake check` and `.#site` need a FlakeHub login.
+The default package and `.#dist` do not.
 
 ## Accepted Tradeoffs
 
