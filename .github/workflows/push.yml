@@ -1,3 +1,4 @@
+# nullkomma:github:start
 name: CI
 on:
   pull_request:
@@ -5,13 +6,14 @@ on:
   workflow_dispatch:
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' || github.ref != 'refs/heads/main' }}
+  cancel-in-progress: true
 jobs:
   nullkomma:
     uses: dataheld/nullkomma/.github/workflows/ci.yml@main
     permissions:
       contents: read
       id-token: write
+# nullkomma:github:end
   deploy:
     needs: nullkomma
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && !github.event.repository.fork }}

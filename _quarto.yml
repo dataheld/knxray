@@ -3,7 +3,6 @@ project:
   render:
     - index.qmd
     - privacy.qmd
-repo-actions: false
 filters:
   - mermaid.lua
 metadata-files:
