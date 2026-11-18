@@ -19,7 +19,7 @@
           enable = true;
           brand.enable = true;
         };
-        cloudflare = {
+        cloudflareSite = {
           enable = true;
           domain = "maxheld.de";
         };

@@ -1,10 +1,11 @@
 .claude/
-/.quarto/
-**/*.quarto_ipynb
 
 # nullkomma:git:start
+/.quarto/
+**/*.quarto_ipynb
 .quarto/
 _site/
+site_libs/
 .luarc.json
 .venv
 .pytest_cache
