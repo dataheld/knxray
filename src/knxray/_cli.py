@@ -3,6 +3,8 @@ import sys
 import zipfile
 from pathlib import Path
 
+from xknxproject.exceptions import XknxProjectException
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(prog="knxray")
@@ -38,19 +40,5 @@ def main() -> None:
         else:
             parser.print_help()
             sys.exit(1)
-    except FileNotFoundError as e:
-        filename = e.filename or "file"
-        print(f"Error: {filename}: No such file or directory", file=sys.stderr)
-        sys.exit(1)
-    except (zipfile.BadZipFile, OSError) as e:
-        print(f"Error: {e}", file=sys.stderr)
-        sys.exit(1)
-    except Exception as e:
-        if "xknxproject" in type(e).__module__:
-            print(f"Error: {e}", file=sys.stderr)
-            sys.exit(1)
-        raise
-
-
-if __name__ == "__main__":
-    main()
+    except (OSError, zipfile.BadZipFile, XknxProjectException) as e:
+        parser.exit(1, f"knxray: error: {e}\n")
