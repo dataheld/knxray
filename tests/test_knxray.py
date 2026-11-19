@@ -1,8 +1,9 @@
 import json
 import shutil
 import subprocess
+import zipfile
 from contextlib import redirect_stdout
-from io import StringIO
+from io import BytesIO, StringIO
 from pathlib import Path
 from unittest.mock import patch
 
@@ -197,3 +198,43 @@ def test_git_diff_textconv_snapshot(snapshot, git_repo_with_knxproj):
 def test_readme_shows_current_git_diff(git_repo_with_knxproj):
     readme = Path("README.md").read_text(encoding="utf-8")
     assert _git_diff(git_repo_with_knxproj) in readme
+
+
+# --- cli errors ---
+
+
+def _knxray(*args):
+    return subprocess.run(["knxray", *map(str, args)], capture_output=True, text=True)
+
+
+def _assert_one_line_error(result):
+    assert result.returncode == 1
+    assert not result.stdout
+    assert len(result.stderr.splitlines()) == 1
+
+
+@pytest.mark.parametrize(
+    "args", [("show", "nope.knxproj"), ("diff", "nope.knxproj", _EXAMPLE)]
+)
+def test_cli_missing_file(args):
+    result = _knxray(*args)
+    _assert_one_line_error(result)
+    assert "nope.knxproj" in result.stderr
+
+
+def _zip_without_project():
+    buf = BytesIO()
+    with zipfile.ZipFile(buf, "w") as z:
+        z.writestr("readme.txt", "")
+    return buf.getvalue()
+
+
+@pytest.mark.parametrize(
+    "content",
+    [b"not a zip", _zip_without_project()],
+    ids=["not-a-zip", "not-a-project"],
+)
+def test_cli_invalid_archive(tmp_path, content):
+    bad = tmp_path / "bad.knxproj"
+    bad.write_bytes(content)
+    _assert_one_line_error(_knxray("show", bad))

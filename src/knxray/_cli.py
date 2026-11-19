@@ -1,6 +1,9 @@
 import argparse
 import sys
+import zipfile
 from pathlib import Path
+
+from xknxproject.exceptions import XknxProjectException
 
 
 def main() -> None:
@@ -21,18 +24,21 @@ def main() -> None:
 
     args = parser.parse_args()
 
-    if args.command == "show":
-        from knxray._show import show
+    try:
+        if args.command == "show":
+            from knxray._show import show
 
-        show(Path(args.file))
-    elif args.command == "diff":
-        from knxray._diff import diff
+            show(Path(args.file))
+        elif args.command == "diff":
+            from knxray._diff import diff
 
-        diff(Path(args.file1), Path(args.file2))
-    elif args.command == "setup":
-        from knxray._setup import setup
+            diff(Path(args.file1), Path(args.file2))
+        elif args.command == "setup":
+            from knxray._setup import setup
 
-        setup(args.global_flag)
-    else:
-        parser.print_help()
-        sys.exit(1)
+            setup(args.global_flag)
+        else:
+            parser.print_help()
+            sys.exit(1)
+    except (OSError, zipfile.BadZipFile, XknxProjectException) as e:
+        parser.exit(1, f"knxray: error: {e}\n")
